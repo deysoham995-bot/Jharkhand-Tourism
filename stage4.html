@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <script src="https://cdn.botpress.cloud/webchat/v3.2/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/09/09/12/20250909121218-T1BSA5LI.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jharkhand Eco & Cultural Tourism</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f7f9fc;
+      color: #1f2937;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .bg-jhhand {
+      position: relative;
+      overflow: hidden;
+      background-image: url('https://placehold.co/1920x1080/4F46E5/ffffff?text=Eco+and+Cultural+Tourism+in+Jharkhand');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-jhhand .faded-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://placehold.co/1920x1080/7F9CF5/ffffff?text=Faded+Background');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2;
+      animation: fadeInOut 6s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #e9f9fb;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #94a8b8;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64798b;
+    }
+
+    @keyframes fadeInOut {
+
+      0%,
+      100% {
+        opacity: 0.2;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    /* Add faded background image to tourism page */
+    #tourism-destination {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      /* Ensure it covers full viewport height */
+      width: 100vw;
+      /* Ensure it stretches full viewport width */
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+    }
+
+    #tourism-destination::before {
+      content: "";
+      position: fixed;
+      /* Changed from absolute to fixed for full screen */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      /* Full viewport width */
+      height: 100vh;
+      /* Full viewport height */
+      background-image: url('https://images.pexels.com/photos/66997/pexels-photo-66997.jpeg?cs=srgb&dl=pexels-no-name-14543-66997.jpg&fm=jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      filter: brightness(70%);
+      z-index: 0;
+    }
+
+    #tourism-destination>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    #tourism-destination .grid>div.cursor-pointer {
+      max-width: 390px;
+      /* Limits box width to make them smaller */
+      margin-left: auto;
+      /* Center horizontally with equal left and right margin */
+      margin-right: auto;
+      padding: 1rem;
+      /* Slightly reduced padding for smaller box */
+    }
+
+    #tourism-destination .cursor-pointer {
+      background-color: rgba(255, 255, 255, 0.3);
+      /* White with 60% opacity for see-through look */
+      backdrop-filter: blur(8px);
+      /* Optional: adds a subtle blur behind boxes for better readability */
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Container must be relative and cursor-pointer for hover */
+    .cursor-pointer {
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* Description box: absolute positioned, covering top area */
+    .box-hover-description {
+      position: absolute;
+      top: 0;
+      /* changed from bottom: 100% */
+      left: 0;
+      right: 0;
+      background: rgba(31, 41, 55, 0.3);
+      color: #f9fafb;
+      font-size: 0.875rem;
+      padding: 1rem;
+      /* more padding for readability */
+      border-radius: 0.375rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateY(-10px);
+      z-index: 20;
+      white-space: normal;
+    }
+
+    /* Show description on hovering container */
+    .cursor-pointer:hover .box-hover-description {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    #scrollLeft {
+  position: absolute;
+  left: 0px; /* or 30px, 50px, etc. */
+  top: 50%;
+  transform: translateY(-50%);
+  /* other styles */
+}
+
+#scrollRight {
+  position: absolute;
+  right: 0px; /* or 30px, 50px, etc. */
+  top: 50%;
+  transform: translateY(-50%);
+  /* other styles */
+}
+
+#scrollLeft, #scrollRight {
+  background-color: transparent !important;
+  color: rgba(9, 9, 9, 0.831) !important;
+  box-shadow: none !important;
+}
+
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-2 bg-white shadow-lg sticky top-0 z-50">
+  <a href="javascript:void(0)" class="flex items-center space-x-2" onclick="showPage('home')">
+    <svg class="h-8 w-8 text-green-600" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Leaf shape -->
+      <path d="M32 4C20 12 8 27 8 40c0 11 7 20 24 20s24-9 24-20c0-13-12-28-24-36z" fill="currentColor" />
+      <!-- Tribal sun rays -->
+      <g stroke="#065F46" stroke-width="2">
+        <line x1="32" y1="2" x2="32" y2="12" />
+        <line x1="20" y1="8" x2="24" y2="16" />
+        <line x1="12" y1="20" x2="20" y2="24" />
+        <line x1="52" y1="8" x2="48" y2="16" />
+        <line x1="56" y1="20" x2="48" y2="24" />
+      </g>
+    </svg>
+    <span class="text-3xl font-bold text-gray-800 select-none">AtithiPath</span>
+  </a>
+ 
+  <!-- Language selector dropdown to the left of Sign In button -->
+  <!-- Language dropdown -->
+    <div>
+      <select id="languageSelect" class="mr-4 rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="hi" selected>English</option>
+        <option value="ho">Hindi</option>
+        <option value="san">Santhali</option>
+        <option value="ho">Ho</option>
+        <option value="mun">Mundari</option>
+        <option value="bn">Bengali</option>
+        <option value="ur">Urdu</option>
+        <option value="nag">Nagpuri</option>
+      </select>
+    </div>
+
+  <button onclick="showPage('login')"
+    class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 font-semibold rounded-md px-4 py-2">
+    Sign In
+  </button>
+  
+</div>
+
+   <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-[56px] z-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="hidden md:block w-full">
+          <div class="flex items-baseline space-x-2 justify-center">
+
+            <button onclick="showPage('home')"
+              class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium">Home</button>
+
+            <button onclick="showPage('tourism-destination')"
+              class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Destination</button>
+
+            <div class="relative inline-block text-left">
+              <button onclick="toggleDropdown('event-dropdown')"
+                class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center">
+                Event &amp; Festival
+                <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="event-dropdown"
+                class="hidden absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div class="py-1">
+                  <a href="javascript:void(0)" onclick="showPage('calendar'); toggleDropdown('event-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Cultural Program
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('TribalFestival'); toggleDropdown('event-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Tribal Festival
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('LocalFairs'); toggleDropdown('event-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Local Fairs
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('SeasonalTourismEvent'); toggleDropdown('event-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Seasonal Tourism Event
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="showPage('marketplace')"
+              class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Marketplace</button>
+
+            <button onclick="showPage('planner')"
+              class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Trip
+              Planner</button>
+
+            <button onclick="showPage('content')"
+              class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Stories</button>
+
+            <div class="relative inline-block text-left">
+              <button onclick="toggleDropdown('helpdesk-dropdown')"
+                class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center">
+                Helpdesk
+                <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="helpdesk-dropdown" class="hidden absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div class="py-1">
+                  <a href="javascript:void(0)" onclick="showPage('feedback'); toggleDropdown('helpdesk-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Query
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('TouristHelpline'); toggleDropdown('helpdesk-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Tourist Helpline
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('EmergencyServices'); toggleDropdown('helpdesk-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Emergency Services
+                  </a>
+                  <a href="javascript:void(0)" onclick="showPage('Suggestions'); toggleDropdown('helpdesk-dropdown')"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    Suggestions
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="md:hidden">
+          <button id="mobile-menu-button" aria-controls="mobile-menu" aria-expanded="false"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <span class="sr-only">Open menu</span>
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <button onclick="showPage('home')"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">Home</button>
+        <button onclick="showPage('tourism-destination')"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">Destination</button>
+        <button onclick="toggleDropdown('event-dropdown-mobile')"
+          class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">
+          Event &amp; Festival
+          <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="event-dropdown-mobile" class="hidden space-y-1 pl-6">
+          <button onclick="showPage('calendar'); toggleDropdown('event-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Cultural Program
+          </button>
+          <button onclick="showPage('TribalFestival'); toggleDropdown('event-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Tribal Festival
+          </button>
+          <button onclick="showPage('LocalFairs'); toggleDropdown('event-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Local Fairs
+          </button>
+          <button onclick="showPage('SeasonalTourismEvent'); toggleDropdown('event-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Seasonal Tourism Event
+          </button>
+        </div>
+        <button onclick="showPage('marketplace')"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">Marketplace</button>
+        <button onclick="showPage('planner')"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">Trip
+          Planner</button>
+        <button onclick="showPage('content')"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">Stories</button>
+        <button onclick="toggleDropdown('helpdesk-dropdown-mobile')"
+          class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100">
+          Helpdesk
+          <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="helpdesk-dropdown-mobile" class="hidden space-y-1 pl-6">
+          <button onclick="showPage('feedback'); toggleDropdown('helpdesk-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Query
+          </button>
+          <button onclick="showPage('TouristHelpline'); toggleDropdown('helpdesk-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Tourist Helpline
+          </button>
+          <button onclick="showPage('EmergencyServices'); toggleDropdown('helpdesk-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Emergency Services
+          </button>
+          <button onclick="showPage('Suggestions'); toggleDropdown('helpdesk-dropdown-mobile')"
+            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+            Suggestions
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <!-- Home Page -->
+    <section id="home" class="page active" >
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+      <source src="Shot2.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Optional faded overlay, can remove .faded-bg div if unwanted -->
+    <div class="faded-bg"></div>
+
+    <!-- Content container above video -->
+    <div
+      class="absolute inset-0 bg-opacity-50 flex flex-col items-center justify-center text-center p-20 space-y-20"
+      style="position: relative; height: 100vh; overflow: hidden; border-radius: 1rem;">
+      <h1
+        class="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg max-w-4xl opacity-0 translate-y-8 animate-fade-slide-up delay-200">
+        Discover the <span class="text-green-400">Soul of Jharkhand</span>
+      </h1>
+      <p
+        class="text-lg md:text-2xl text-green-100 max-w-lg drop-shadow-md opacity-5 translate-y-8 animate-fade-slide-up delay-300">
+        Explore stunning eco-destinations and rich cultural heritage that await your adventure.
+      </p>
+      <button onclick="showPage('tourism-destination')"
+        class="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold rounded-full py-4 px-8 shadow-lg opacity-0 translate-y-8 animate-fade-slide-up delay-500">
+        Start Your Adventure
+      </button>
+    </div>
+  </div>
+
+  <style>
+    @keyframes fade-slide-up {
+      0% {
+        opacity: 0;
+        transform: translateY(32px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-slide-up {
+      animation: fade-slide-up 0.8s forwards;
+    }
+
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-500 {
+      animation-delay: 0.5s;
+    }
+  </style>
+
+      <!-- Explore Jharkhand Section -->
+      <section class="pt-0 pb-16 w-full">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h2 class="text-5xl font-extrabold text-gray-900 mb-2" style="font-family: 'Times New Roman', serif;">
+            Explore <span style="color:#38a169;">Jharkhand</span>
+          </h2>
+          <hr class="mx-auto mb-4" style="border-top:3px solid #d53f8c;width:120px;" />
+          <p class="text-lg text-gray-700 font-semibold">Discover eco destinations, vibrant culture, and scenic
+            adventures</p>
+        </div>
+        <!-- Wrapper for arrows and scroll container -->
+        <div class="relative max-w-7xl mx-auto">
+          <!-- Left Arrow -->
+          <button id="scrollLeft" aria-label="Scroll Left"
+            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white rounded-full p-2 shadow hover:bg-indigo-700 z-20">
+            &#9664;
+          </button>
+          <!-- Scroll container with id -->
+          <div id="exploreScrollContainer" class="flex space-x-8 overflow-x-auto no-scrollbar py-4 px-2 max-w-full max-w-7xl mx-auto scrollbar-hide">
+          <div onclick="showPage('river-cruise')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img src="https://about2cruise.co.uk/wp-content/uploads/2025/04/sahibganj_cruise_ship_information.webp"
+              alt="River and Cruise tourism" class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Enjoy a serene river cruise amidst lush natural surroundings.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                River and Cruise tourism
+              </div>
+            </div>
+          </div>
+
+          <!-- UPDATED: The Mountains now links to mountains-list page -->
+          <div onclick="showPage('mountains-list')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img src="https://pbs.twimg.com/media/F6UWjZRX0AA39Rv.jpg" alt="The Mountains"
+              class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Experience majestic mountain landscapes perfect for trekking and adventure.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                The Mountains
+              </div>
+            </div>
+          </div>
+
+          <div onclick="showPage('cultural-tourism')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2k0n2VPbS3NwdMzTcF1uo6nr1Prm7Hw9jmFRwxzLH8ghSt2bbBebjJomS6r4NkWrrwrg&usqp=CAU"
+              alt="Cultural Tourism" class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Discover rich culture and tribal heritage through local arts and traditions.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                Cultural Tourism
+              </div>
+            </div>
+          </div>
+
+          <div onclick="showPage('wildlife')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img
+              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/cd/29/fd/dsc-2726-1-largejpg.jpg?w=1000&h=800&s=1"
+              alt="Wildlife" class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Explore wildlife sanctuaries with diverse flora and fauna in natural habitats.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                Wildlife
+              </div>  
+            </div>
+          </div>
+
+          <div onclick="showPage('religious-tourism')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Chhinnamastika_Temple_Rajrappa.jpg/1200px-Chhinnamastika_Temple_Rajrappa.jpg"
+              alt="Religious Tourism" class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Visit sacred temples known for their spiritual significance and rituals.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                Religious Tourism
+              </div>
+            </div>
+          </div>
+
+          <div onclick="showPage('heritage-tourism')"
+            class="relative rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer h-80 flex items-end w-80 flex-shrink-0">
+            <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Palamau_Fort.jpg" alt="Heritage Tourism"
+              class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="box-hover-description">
+              Explore historical forts and landmarks that preserve Jharkhand's heritage.
+            </div>
+            <div class="relative w-full z-10">
+              <div class="w-full text-center px-3 py-4 text-white font-bold text-xl"
+                style="background:rgba(0,0,0,0.15); backdrop-filter: blur(2px); opacity:0.90;">
+                Heritage Tourism
+              </div>
+            </div>
+          </div>
+        <!-- Right Arrow -->
+          <button id="scrollRight" aria-label="Scroll Right"
+            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white rounded-full p-2 shadow hover:bg-indigo-700 z-20">
+            &#9654;
+          </button>
+
+        </div>
+      </section>
+    </section>
+
+    <section id="river-cruise" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">River Cruise</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('ranchi-lake')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Ranchi Lake" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Ranchi Lake</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple lake and panoramic views.</p>
+        </div>
+        <!-- Add more river destinations below if needed -->
+      </div>
+    </section>
+
+    <!-- NEW: Mountains Listing Page -->
+    <section id="mountains-list" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Mountain Destinations</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('parasnath-hills')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQv-yI_EZ8g9oZGSRWD3eBUB91fhtpyKv0a5BAQJAhpVEmtL1UBGJLTsz_SRGnnHppI_bxptNCOfW01Og3cSS13aU5i-PSHFdBLwYGXqw" alt="Parasnath Hills" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Parasnath Hills</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple temples atop the hill and panoramic views.</p>
+        </div>
+        <div onclick="openDetailPage('canary-hills')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/6a10bcc6f5315518fb822c3b3532f3d6_400x400.jpg" alt="Canary Hills" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Canary Hills</h3>
+          <p class="text-gray-600 text-sm mt-1">Canary Hill is a renowned tourist spot in Hazaribagh, Jharkhand, India, known for its lush green surroundings and panoramic view of the town and dense forests.</p>
+        </div>
+        <div onclick="openDetailPage('netarhat-hill-station')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/9ffc869f0419cc62a4e18896dc9b388b_400x400.jpg" alt="Netarhat Hill Station" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Netarhat Hill Station</h3>
+          <p class="text-gray-600 text-sm mt-1">Netarhat, commonly referred to as the "Queen of Chotanagpur", is a beautiful hill station located in the Latehar district of Jharkhand, India.</p>
+        </div>
+        <div onclick="openDetailPage('trikut-pahar')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/8b9c56be7a9bdf6563496cc3044aae2e_400x400.jpg" alt="Trikut Pahar" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Trikut Pahar</h3>
+          <p class="text-gray-600 text-sm mt-1">Trikut Pahar is an idyllic hill station located near Deoghar in the scenic state of Jharkhand, India.</p>
+        </div>
+        <!-- Add more mountain destinations below if needed -->
+      </div>
+    </section>
+
+    <section id="cultural-tourism" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Cultural Tourisms</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('rajrappa-temple')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Rajrappa Temple" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Rajrappa Temple</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple cultural fest and panoramic views.</p>
+        </div>
+        <!-- Add more cultural tourism below if needed -->
+      </div>
+    </section>
+
+    <section id="wildlife" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Wildlife Destinations</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('betla-national-park')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Belta National Park" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Belta National Park</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple wildlife sanctuary and panoramic views.</p>
+        </div>
+        <!-- Add more wildlife park below if needed -->
+      </div>
+    </section>
+
+    <section id="religious-tourism" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Religious Tourisms</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('rajrappa-temple')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Rajrappa Temple" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Rajrappa Temple</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple temple and panoramic views.</p>
+        </div>
+         <div onclick="openDetailPage('pahari-mandir')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Pahari Mandir" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Pahari Mandir</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+         <div onclick="openDetailPage('bhuvaneswari-temple')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Bhuvaneswari Temple" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Bhuvaneswari Temple</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+         <div onclick="openDetailPage('baidyanath-temple')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Baidyanath Temple" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Baidyanath Temple</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+        <div onclick="openDetailPage('naulakha-mandir')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Naulakha Mandir" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Naulakha Mandir</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+        <div onclick="openDetailPage('shakti-mandir')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Shakti Mandir" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Shakti Mandir</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+        <div onclick="openDetailPage('harihar-dham')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Harihar Dham" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Harihar Dham</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+        <div onclick="openDetailPage('madhuvan-giridih')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Madhuvan Giridih" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Madhuvan Giridih</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site with multiple temple and panoramic views.</p>
+        </div>
+        <!-- Add more religious tourism below if needed -->
+      </div>
+    </section>
+
+    <section id="heritage-tourism" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('home')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Explore</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Heritage Tourisms</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="openDetailPage('rajrappa-temple')" class="cursor-pointer bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Parasnath_Hills.jpg" alt="Rajrappa Temple" class="w-full h-40 object-cover rounded-md mb-2" />
+          <h3 class="text-xl font-semibold">Rajrappa Temple</h3>
+          <p class="text-gray-600 text-sm mt-1">Major pilgrimage site for Jains with multiple historical destinations and panoramic views.</p>
+        </div>
+        <!-- Add more heritage tourism below if needed -->
+      </div>
+    </section>
+
+     <!-- Tribal Festival Page -->
+<section id="TribalFestival" class="page py-12 px-4 max-w-7xl mx-auto">
+  <h2 class="text-3xl font-bold mb-8 text-center">Tribal Festival</h2>
+  <p class="max-w-3xl mx-auto text-lg text-gray-700">
+    Tribal festivals in Jharkhand celebrate the rich cultural heritage and vibrant traditions of the indigenous communities.
+    These festivals include dance, music, rituals, and community gatherings that honor nature and ancestral spirits.
+    Notable examples include Sarhul, Karma, and Tusu festivals, celebrated with colorful ceremonies and folk performances.
+  </p>
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <div onclick="showPage('sarhul-festival-detail')" class="relative rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+      <img src="https://i.pinimg.com/736x/42/01/c0/4201c0cc7727cf1d43ea6cfc8d146cb2.jpg" alt="Sarhul Festival" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-center p-4 transition-opacity">
+        Sarhul Festival: Celebrating spring and worship of Sal trees.
+      </div>
+    </div>
+    <div onclick="showPage('karma-festival-detail')" class="relative rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+      <img src="https://example.com/photo2.jpg" alt="Karma Festival" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-center p-4 transition-opacity">
+        Karma Festival: Invoking Karam Devta with music and dance.
+      </div>
+    </div>
+    <div onclick="showPage('tusu-festival-detail')" class="relative rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+      <img src="https://example.com/photo3.jpg" alt="Tusu Festival" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-center p-4 transition-opacity">
+        Tusu Festival: Harvest celebration with folk art and songs.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sarhul Festival Detail Page -->
+<section id="sarhul-festival-detail" class="page py-12 px-4 max-w-7xl mx-auto">
+  <button onclick="showPage('TribalFestival')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Tribal Festival</button>
+  <h2 class="text-4xl font-bold mb-8 text-center">Sarhul Festival</h2>
+  <div class="flex justify-center mb-6">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_lAUsV9f6cYXZMYujx6wmWMw3y6T8joFIVg&s" alt="Sarhul Festival" class="rounded-lg max-w-3xl" />
+  </div>
+  <p class="text-lg max-w-4xl mx-auto text-gray-700">
+    Sarhul Festival is a major tribal festival celebrating the arrival of spring. The Sal trees are worshiped as a sign of respect for nature and prosperity. The festival features traditional dances, music, and rituals performed by indigenous communities.
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+    <img src="data:image/jpeg;base64,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" alt="Sarhul Festival photo 1" class="rounded-lg shadow-md" />
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp5GLahCBYCCSTC5wlGkeekisN4lf0VhDMgg&s" alt="Sarhul Festival photo 2" class="rounded-lg shadow-md" />
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTCEIydsATBdoK9w6J0TjCPyN9HgGujbO97w&s" alt="Sarhul Festival photo 3" class="rounded-lg shadow-md" />
+  </div>
+</section>
+
+<!-- Karma Festival Detail Page -->
+<section id="karma-festival-detail" class="page py-12 px-4 max-w-7xl mx-auto">
+  <button onclick="showPage('TribalFestival')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Tribal Festival</button>
+  <h2 class="text-4xl font-bold mb-8 text-center">Karma Festival</h2>
+  <div class="flex justify-center mb-6">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTCEIydsATBdoK9w6J0TjCPyN9HgGujbO97w&s" alt="Karma Festival" class="rounded-lg max-w-3xl" />
+  </div>
+  <p class="text-lg max-w-4xl mx-auto text-gray-700">
+    Karma Festival is celebrated to invoke Karam Devta, the god of fate, with music, dance, and the planting of a Karam tree branch. It is a time of joyous community gatherings and rituals to seek blessings for a good harvest and prosperity.
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+    <img src="https://example.com/photo2.jpg" alt="Karma Festival photo 1" class="rounded-lg shadow-md" />
+    <img src="https://example.com/photo2b.jpg" alt="Karma Festival photo 2" class="rounded-lg shadow-md" />
+    <img src="https://example.com/photo2c.jpg" alt="Karma Festival photo 3" class="rounded-lg shadow-md" />
+  </div>
+</section>
+
+<!-- Tusu Festival Detail Page -->
+<section id="tusu-festival-detail" class="page py-12 px-4 max-w-7xl mx-auto">
+  <button onclick="showPage('TribalFestival')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Tribal Festival</button>
+  <h2 class="text-4xl font-bold mb-8 text-center">Tusu Festival</h2>
+  <div class="flex justify-center mb-6">
+    <img src="https://example.com/photo3.jpg" alt="Tusu Festival" class="rounded-lg max-w-3xl" />
+  </div>
+  <p class="text-lg max-w-4xl mx-auto text-gray-700">
+    Tusu Festival is a harvest celebration marked by folk art and songs. It is an important cultural festival among tribal communities in Jharkhand, celebrated with colorful decorations, dances, and traditional music.
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+    <img src="https://example.com/photo3.jpg" alt="Tusu Festival photo 1" class="rounded-lg shadow-md" />
+    <img src="https://example.com/photo3b.jpg" alt="Tusu Festival photo 2" class="rounded-lg shadow-md" />
+    <img src="https://example.com/photo3c.jpg" alt="Tusu Festival photo 3" class="rounded-lg shadow-md" />
+  </div>
+</section>
+
+
+<!-- Local Fairs Listing Page -->
+    <section id="LocalFairs" class="page py-12 px-4 max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold mb-8 text-center">Local Fairs</h2>
+      <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-10">
+        Local fairs in Jharkhand showcase the vibrant culture, traditional crafts, and lively spirit of the communities. These fairs are occasions for folk performances, handicrafts exhibitions, delicious local foods, and traditional games.
+        Experience the authentic local lifestyle and festivities at popular fairs such as the Gumla Mahotsav, Lohardaga Mela, and more.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div onclick="showPage('gumla-mahotsav')" class="rounded-lg overflow-hidden shadow-lg cursor-pointer">
+          <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_215/Gumla-Mahotsav-1.jpg" alt="Gumla Mahotsav" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Gumla Mahotsav</h3>
+            <p class="text-gray-600 text-sm">A grand cultural fest with folk dances, music, and handicrafts highlighting local traditions.</p>
+          </div>
+        </div>
+        <div onclick="showPage('lohardaga-mela')" class="rounded-lg overflow-hidden shadow-lg cursor-pointer">
+          <img src="https://www.jharkhandtourism.in/images/fairs/lohardaiga-mela.jpg" alt="Lohardaga Mela" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Lohardaga Mela</h3>
+            <p class="text-gray-600 text-sm">Annual fair featuring tribal arts, local cuisine, and traditional games attracting visitors from all over.</p>
+          </div>
+        </div>
+        <div onclick="showPage('chotanagpur-mela')" class="rounded-lg overflow-hidden shadow-lg cursor-pointer">
+          <img src="https://images.jagranjosh.com/2022/09/24091150/fairs-of-jharkhand.jpg" alt="Chotanagpur Mela" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Chotanagpur Mela</h3>
+            <p class="text-gray-600 text-sm">A festive gathering showcasing the diversity of cultures and arts of Jharkhand’s tribal communities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed pages for Local Fairs -->
+    <section id="gumla-mahotsav" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('LocalFairs')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Local Fairs</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Gumla Mahotsav</h2>
+      <div class="flex justify-center mb-6">
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_215/Gumla-Mahotsav-1.jpg" alt="Gumla Mahotsav" class="rounded-lg max-w-3xl" />
+      </div>
+      <p class="text-lg max-w-4xl mx-auto text-gray-700">
+        A grand cultural fest with folk dances, music, and handicrafts highlighting local traditions.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_215/Gumla-Mahotsav-1.jpg" alt="Gumla Mahotsav photo 1" class="rounded-lg shadow-md" />
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_215/Gumla-Mahotsav-1.jpg" alt="Gumla Mahotsav photo 2" class="rounded-lg shadow-md" />
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_215/Gumla-Mahotsav-1.jpg" alt="Gumla Mahotsav photo 3" class="rounded-lg shadow-md" />
+      </div>
+    </section>
+
+    <section id="lohardaga-mela" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('LocalFairs')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Local Fairs</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Lohardaga Mela</h2>
+      <div class="flex justify-center mb-6">
+        <img src="https://www.jharkhandtourism.in/images/fairs/lohardaiga-mela.jpg" alt="Lohardaga Mela" class="rounded-lg max-w-3xl" />
+      </div>
+      <p class="text-lg max-w-4xl mx-auto text-gray-700">
+        Annual fair featuring tribal arts, local cuisine, and traditional games attracting visitors from all over.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+        <img src="https://www.jharkhandtourism.in/images/fairs/lohardaiga-mela.jpg" alt="Lohardaga Mela photo 1" class="rounded-lg shadow-md" />
+        <img src="https://www.jharkhandtourism.in/images/fairs/lohardaiga-mela.jpg" alt="Lohardaga Mela photo 2" class="rounded-lg shadow-md" />
+        <img src="https://www.jharkhandtourism.in/images/fairs/lohardaiga-mela.jpg" alt="Lohardaga Mela photo 3" class="rounded-lg shadow-md" />
+      </div>
+    </section>
+
+    <section id="chotanagpur-mela" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('LocalFairs')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Local Fairs</button>
+      <h2 class="text-4xl font-bold mb-8 text-center">Chotanagpur Mela</h2>
+      <div class="flex justify-center mb-6">
+        <img src="https://images.jagranjosh.com/2022/09/24091150/fairs-of-jharkhand.jpg" alt="Chotanagpur Mela" class="rounded-lg max-w-3xl" />
+      </div>
+      <p class="text-lg max-w-4xl mx-auto text-gray-700">
+        A festive gathering showcasing the diversity of cultures and arts of Jharkhand’s tribal communities.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
+        <img src="https://images.jagranjosh.com/2022/09/24091150/fairs-of-jharkhand.jpg" alt="Chotanagpur Mela photo 1" class="rounded-lg shadow-md" />
+        <img src="https://images.jagranjosh.com/2022/09/24091150/fairs-of-jharkhand.jpg" alt="Chotanagpur Mela photo 2" class="rounded-lg shadow-md" />
+        <img src="https://images.jagranjosh.com/2022/09/24091150/fairs-of-jharkhand.jpg" alt="Chotanagpur Mela photo 3" class="rounded-lg shadow-md" />
+      </div>
+    </section>
+
+
+<!--Seasonal Tourism Event-->
+<section id="SeasonalTourismEvent" class="page py-12 px-4 max-w-7xl mx-auto">
+  <h2 class="text-3xl font-bold mb-8 text-center">Seasonal Tourism Events</h2>
+  <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-10">
+    Seasonal tourism events in Jharkhand highlight the natural rhythms and vibrant local celebrations tied to specific times of the year. These events showcase traditional music, dance, local cuisine, and cultural rituals that celebrate the changing seasons from spring blooms to harvest festivals.
+    Join these unique experiences such as the Autumn Harvest Festival, Winter Folk Fair, and Monsoon Cultural Gatherings for an authentic taste of Jharkhand’s heritage.
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    <div class="rounded-lg overflow-hidden shadow-lg cursor-pointer" onclick="openSeasonalEventDetail('autumn-harvest-festival')">
+      <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_550/autumn-harvest-festival.jpg" alt="Autumn Harvest Festival" class="w-full h-48 object-cover" />
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">Autumn Harvest Festival</h3>
+        <p class="text-gray-600 text-sm">A celebration of the harvest season with vibrant folk dances, traditional music, and delicious seasonal foods.</p>
+      </div>
+    </div>
+    <div class="rounded-lg overflow-hidden shadow-lg cursor-pointer" onclick="openSeasonalEventDetail('winter-folk-fair')">
+      <img src="https://images.unsplash.com/photo-1541306746855-6304882f7680?auto=format&fit=crop&w=800&q=80" alt="Winter Folk Fair" class="w-full h-48 object-cover" />
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">Winter Folk Fair</h3>
+        <p class="text-gray-600 text-sm">An event where local artisans showcase winter crafts, and communities gather for storytelling and traditional performances.</p>
+      </div>
+    </div>
+    <div class="rounded-lg overflow-hidden shadow-lg cursor-pointer" onclick="openSeasonalEventDetail('monsoon-cultural-gatherings')">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Monsoon Cultural Gatherings" class="w-full h-48 object-cover" />
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">Monsoon Cultural Gatherings</h3>
+        <p class="text-gray-600 text-sm">Experience lively celebrations during the monsoon with folk music, dance, and rituals that honor nature’s bounty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Detail page for seasonal tourism events -->
+    <section id="seasonal-event-detail" class="page py-12 px-4 max-w-7xl mx-auto">
+      <button onclick="showPage('SeasonalTourismEvent')" class="text-indigo-600 underline mb-6 hover:text-indigo-800">&larr; Back to Seasonal Events</button>
+      <h2 id="seasonal-event-title" class="text-4xl font-bold mb-4"></h2>
+      <div id="seasonal-event-images" class="flex space-x-4 overflow-x-auto mb-6"></div>
+      <p id="seasonal-event-description" class="text-lg max-w-4xl"></p>
+    </section>
+
+<!--Javascript for Seasonal Tourism-->
+<script>
+    const seasonalEventsData = {
+      'autumn-harvest-festival': {
+        title: 'Autumn Harvest Festival',
+        description: `A colorful celebration of harvest season marked by vibrant folk dances, traditional music, and delicious seasonal foods that honor the bounty of the land.`,
+        images: [
+          'https://utsav.gov.in/public/uploads/event_cover_image/event_550/autumn-harvest-festival.jpg',
+          'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80'
+        ]
+      },
+      'winter-folk-fair': {
+        title: 'Winter Folk Fair',
+        description: `An event where local artisans showcase their winter crafts. Communities gather for storytelling, traditional performances, and a lively winter market atmosphere.`,
+        images: [
+          'https://images.unsplash.com/photo-1541306746855-6304882f7680?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80'
+        ]
+      },
+      'monsoon-cultural-gatherings': {
+        title: 'Monsoon Cultural Gatherings',
+        description: `Experience the joyful monsoon season with folk music, traditional dances, and rituals that honor nature’s bounty and the life-giving rains.`,
+        images: [
+          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1504595403659-9088ce801e29?auto=format&fit=crop&w=800&q=80'
+        ]
+      }
+    };
+
+    function openSeasonalEventDetail(eventId) {
+      const eventData = seasonalEventsData[eventId];
+      if (!eventData) return;
+
+      const titleEl = document.getElementById('seasonal-event-title');
+      const descEl = document.getElementById('seasonal-event-description');
+      const imagesEl = document.getElementById('seasonal-event-images');
+
+      titleEl.textContent = eventData.title;
+      descEl.textContent = eventData.description;
+      imagesEl.innerHTML = '';
+
+      eventData.images.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = eventData.title;
+        img.className = 'h-64 rounded-lg shadow-md flex-shrink-0';
+        imagesEl.appendChild(img);
+      });
+
+      showPage('seasonal-event-detail');
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      const page = document.getElementById(pageId);
+      if (page) page.style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+  </script>
+
+    <!-- Tourism Destination Page -->
+    <section id="tourism-destination" class="page">
+      <h2 class="text-3xl font-bold mb-10 text-center">Tourism Destination</h2>
+
+      <div class="flex justify-center mb-6">
+        <input id="tourismSearchInput" type="text" placeholder="Search Destinations..."
+          class="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <button onclick="tourismSearch()"
+          class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+          Search
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Hudru Falls -->
+        <div onclick="openDetailPage('hundru-falls')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noY-6n-NkRWqEOQIiQRJDN491ubvEy_KLGMaoUZA9SsNv9deEQllEVm9cagnrmSHF8wqC1HSzwM5OCm93505VUt4rD1ts1yWNlcWZk1aTO5c3rWN5AxFcwDHtfwsQMmouwF53zABw=s1360-w1360-h1020-rw"
+            alt="Hudru Falls" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Hundru Falls</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-blue-100 text-green-800 text-xs px-2 rounded-full">Waterfalls</span>
+            <span class="bg-orange-100 text-blue-800 text-xs px-2 rounded-full">Trekking</span>
+            <span class="bg-purple-100 text-purple-800 text-xs px-2 rounded-full">Ranchi</span>
+          </div>
+        </div>
+
+        <!-- Parasnath Hills -->
+        <div onclick="openDetailPage('parasnath-hills')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQv-yI_EZ8g9oZGSRWD3eBUB91fhtpyKv0a5BAQJAhpVEmtL1UBGJLTsz_SRGnnHppI_bxptNCOfW01Og3cSS13aU5i-PSHFdBLwYGXqw"
+            alt="Parasnath Hills" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Parasnath Hills</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full">Hills</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Canary Hills -->
+        <div onclick="openDetailPage('canary-hills')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/6a10bcc6f5315518fb822c3b3532f3d6_400x400.jpg"
+            alt="Canary Hills" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Canary Hills</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full">Hills</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Netarhat Hill Station -->
+        <div onclick="openDetailPage('netarhat-hill-station')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/9ffc869f0419cc62a4e18896dc9b388b_400x400.jpg"
+            alt="Netarhat Hill Station" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Netarhat Hill Station</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full">Hills</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+        <!-- Trikut Pahar -->
+        <div onclick="openDetailPage('trikut-pahar')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/8b9c56be7a9bdf6563496cc3044aae2e_400x400.jpg"
+            alt="Trikut Pahar" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Trikut Pahar</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full">Hills</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+        <!-- Betla National Park -->
+        <div onclick="openDetailPage('betla-national-park')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img src="https://site.outlookindia.com/traveller/wp-content/uploads/2017/06/jharkhand1_Betla-NP_FI.jpg"
+            alt="Betla National Park" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Betla National Park</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-green-100 text-cyan-800 text-xs px-2 rounded-full">Forests</span>
+            <span class="bg-green-100 text-green-800 text-xs px-2 rounded-full">Wildlife</span>
+          </div>
+        </div>
+
+        <!-- Ranchi Lake -->
+        <div onclick="openDetailPage('ranchi-lake')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/b081b8018be89e3a722644c21b991ad8_1000x1000.jpg"
+            alt="Ranchi Lake" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Ranchi Lake</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-blue-100 text-blue-800 text-xs px-2 rounded-full">Lake</span>
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full">City</span>
+          </div>
+        </div>
+
+        <!-- Jonha Falls -->
+        <div onclick="openDetailPage('jonha-falls')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Jonha_falls.jpg/960px-Jonha_falls.jpg"
+            alt="Jonha Falls" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Jonha Falls</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-blue-100 text-green-800 text-xs px-2 rounded-full">Waterfalls</span>
+            <span class="bg-purple-100 text-purple-800 text-xs px-2 rounded-full">Nature</span>
+          </div>
+        </div>
+
+        <!-- Rajrappa Temple -->
+        <div onclick="openDetailPage('rajrappa-temple')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Chhinnamastika_Temple_Rajrappa.jpg/1200px-Chhinnamastika_Temple_Rajrappa.jpg"
+            alt="Rajrappa Temple" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Rajrappa Temple</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Pahari Mandir -->
+        <div onclick="openDetailPage('pahari-mandir')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/bf4a25baa395d3bf20555806e43db62f_400x400.jpg"
+            alt="Pahari Mandir" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Pahari Mandir</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-blue-100 text-green-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-purple-100 text-purple-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Bhuvaneswari Temple -->
+        <div onclick="openDetailPage('bhuvaneswari-temple')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/a71cfd734664c827561af2f542d277bc_400x400.png"
+            alt="Bhuvaneswari Temple" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Bhuvaneswari Temple</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Baidyanath Temple -->
+        <div onclick="openDetailPage('baidyanath-temple')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/0e67ea3cbf5d5bb9073cd6fc84333080_400x400.jpeg"
+            alt="Baidyanath Temple" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Baidyanath Temple</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Naulakha Mandir -->
+        <div onclick="openDetailPage('naulakha-mandir')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/508c971cd31a86660c6f666936fb2f03_400x400.jpg"
+            alt="Naulakha Mandir" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Naulakha Mandir</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Shakti Mandir -->
+        <div onclick="openDetailPage('shakti-mandir')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/ad4d1e0313e30dc1a266fa02135c2996_400x400.jpg"
+            alt="Shakti Mandir" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Shakti Mandir</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Harihar Dham -->
+        <div onclick="openDetailPage('harihar-dham')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/c9765edb38f5f94370d3fdec442261b8_400x400.jpg"
+            alt="Harihar Dham" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Harihar Dham</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+
+         <!-- Madhuvan Giridih -->
+        <div onclick="openDetailPage('madhuvan-giridih')"
+          class="cursor-pointer bg-white rounded-xl shadow-lg hover:scale-105 transform transition p-6 space-y-4">
+          <img
+            src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/3a72a439d0d6e37f0c56d3dd559d17d9_400x400.jpg"
+            alt="Madhuvan Giridih" class="w-full h-48 object-cover rounded-lg" />
+          <h3 class="text-xl font-semibold text-gray-900">Madhuvan Giridih</h3>
+          <p class="text-gray-600 line-clamp-3"></p>
+          <div class="flex gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 rounded-full">Temple</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 rounded-full">Pilgrimage</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detail Page -->
+    <section id="detail-page" class="page" style="padding: 1rem;">
+      <button onclick="showPage('tourism-destination')"
+        class="text-indigo-600 underline mb-4 hover:text-indigo-800">&larr; Back to Destinations</button>
+      <h1 id="detail-title" class="text-3xl font-bold mb-4"></h1>
+      <div id="detail-images" class="flex space-x-4 overflow-x-auto mb-6"></div>
+      <p id="detail-description" class="text-lg"></p>
+    </section>
+    <!-- <main class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8"> -->
+
+  <!-- Add this login section here -->
+  <section id="login" class="page py-12 px-4 max-w-md mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-10">Login to AtithiPath</h2>
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <form onsubmit="handleLoginSubmit(event)">
+        <div class="space-y-6">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+            <input type="email" id="login-email" name="email" required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="login-password" name="password" required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+          </div>
+          <button type="submit"
+            class="w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">
+            Login
+          </button>
+          <p class="text-center text-sm text-gray-600 mt-4">
+            Don't have an account?
+            <button type="button" onclick="showPage('signup')" class="text-indigo-600 hover:underline font-semibold">
+              Sign up
+            </button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    // Initial page elements
+    pages = document.querySelectorAll('.page');
+    mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton = document.getElementById('mobile-menu-button');
+
+    // Page navigation logic
+    function showPage(pageId) {
+      pages.forEach((page) => (page.style.display = 'none'));
+      const page = document.getElementById(pageId);
+      if (page) page.style.display = 'block';
+      window.scrollTo(0, 0);
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', () => {
+        if (mobileMenu) mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+      // API key for weather API
+    API_KEY = "1a51c4f4db4b481fbca55650250909";
+
+    const destinationsData = {
+      'hundru-falls': {
+        title: 'Hundru Falls',
+        description:
+          'Hundru Falls, located about 45 km from Ranchi in Jharkhand, is the states highest waterfall at 98 meters (322 feet), formed by the Subarnarekha River plunging over rocky terrain. Surrounded by dense forests and dramatic rock formations, the falls create a spectacular scene, especially vibrant during the monsoon when water flow peaks. The base features a natural pool, popular for bathing and picnics, while the undulating landscape draws trekkers and adventure seekers.Rich in cultural significance, Hundru Falls is associated with local tribal communities such as the Munda and Oraon, who celebrate traditional festivals and rituals nearby. Modern amenities and improved access have made it a major tourism spot, with eco-tourism and conservation efforts now promoting education and sustainability. The best time to visit is post-monsoon (September to February) for optimal views and a lush green environment.',
+        images: [
+          'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUSExMWFhUXFxsaGRgYGSEgIBoaGh0bGh0bGx4fHiggIB8lGx8XITEiJSkrLi4uGB8zODMsNygtLisBCgoKDg0OGxAQGi0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS03LTctLf/AABEIAKgBLAMBIgACEQEDEQH/xAAbAAACAgMBAAAAAAAAAAAAAAAEBQMGAAIHAf/EAEEQAAIBAgQDBgUDAwIEBQUBAAECEQMhAAQSMQVBUQYTImFxgTKRobHwQsHRI+HxFFIVQ2KCBzNykrIkU6LS4hb/xAAZAQADAQEBAAAAAAAAAAAAAAABAgMABAX/xAAhEQACAwADAQEAAwEAAAAAAAAAAQIRIQMSMUFRIjJhE//aAAwDAQACEQMRAD8ADq94j1C6mIMiORtzB/Iwsr6abI1JvDtcDUp5Buo3g/hvSIhdXrW1ysQbWImZmNjN8K8/wSirltWv/cs9RPhMbR02jHY5I42qF/BONsr6UYLN45T5H2OLdR4qtcFHVVqqYZWIEybMpi/nzxzRqZp1GBIgTFtx18sM14ghAWoYafBU3g9GHMETfyGB6ZHQmqd2rI4AgGDI0n1jY4RZymlZwQosYIEDTaZIPLe3nacRDiAVCZDlRMRseSk/ODacRcA40mYEVRDBiJFpB2kfxG2Ek3EpFJmz8ERHLBijbFgSJPUAGDsdxgftAuY0PSWotVNNxoBaG6RE+oG+LHm6YdfjneLeRURim0OKoudYVp0aYYMCDAFzESQI5DnjcbT0000Muy/AmWnTIYjxkQBpUEyII5db4GSg1EmatSVBW7FtBt15W8/thp2azy1DU7qstRQpKOJuVPhkEbiwv++BuIHTpd1P9UEkqdm8MgSDzm3pjppOmc90yBs5qClahBCwWcaw1zvoK7E/bE+Sz9QEKwQpPxJqAEcirCRJnEOWytGqGAqwxWF1LDA+ZB0sPUYD4JWioaVRoNwPCQpYfXGmss0HpY6dB3B1OiygIIIAJtE35/gwDnOLLR09/FiIKeK8zBib3EDzwXl+EKymVGuJZdRK3uRG0ewnCjinBGUzTphPEQyqBB58jc7HbYY5H7p1rwqeb4lTbMs6l5MyNJEyIggjbDPs9wuizCuAZVJUC66jqQkdDsYnniDNNSAqMFIrwJM/pN4F7G+0G17YhqZ45ME6FYFQCNXi1CZkAdLG32xeTuGEYr+ZagsuALiDcctp+2A85VzIMGlKx0BBF+hnz8owW/EaYZSNqqK09Z3j7++Nc7XLKpkAAbzNgb8hjnbsrSEOd4kxbSx1EAaoXfkBe0DzxqmZUrETbfcW9LC8YF4hkCRq0yPqfbpF8MaVanCqPiZRNoiI3wUT6esFoOSwnSdwAJg7z+84Y1bq2kk9RziAPvhRUyzmoHAudjMW/PthhlqNY1NASDHI7j3/AC+FmaMa8D62YnQIAjYdRE8+l8FZbLqxggenqxbn64GzOXNOmQ9MySP6kaoNyAYkqPofbBOWFItpJUOVPOSB5nbfAbHkhpU4fQhdYJI2iReefLCHNZMd+BphibEnlvH5198OXq09MMNQn/2nf3jCzPvTUqwMFmlTHv8AK/1wVIzVgmfyyqhqOp1EkQDYch9t8IKfjI0ACBHig28+fvEYYcTzIMDV4ALzvff63xW6mSYmQ1gN1xSLslyR7PB85lm0GSFEkGyjqQOvliepwtzT1TMg3U7TECNjecLOCZqotR1lvCBN9h52viw8Mr1AGn1jkRzidv7YDzwVQi/7CnilJIWxDCxNxqMg+9sAvVqEgaFAP6unWfbl54eZx6LWqASYmNxt02vHyxDSy9Byz6QYIsSYkRNp/wA40WTnBJ4AUaqqyrYmYEKbfWd8PcnnQJJQrGxaJN+Y5dMB91T1f09Kt6R1k32H8YIo0UsAdci5JMWmLRe8XA5DBkkCMWgk8WXTqUyLAx9LD8tjKh1EM2pZEBgYMHkJ2MyMJlqJSLoBJEGdXhESJtHW++PKOdaqCFFusH6X398I4/gyZpmqCiqCDUspuV2MQCZ3/wAYko5/LmbA3iTRB+2BKHG6qMKbqRJAv5/XAVfiKkzoU9SbGfODGHNTOgcZrDuYV/HfwkEx15/kYpIz1ZK3iaAf1EAzGxg7Hl+HD/P0WNU94zA7zFwLxhLTuzn4gCCPOZ6eeFao6XrG2R4gH1o5seS9PIx1nfA2YycSpmQbT/fyx4Ujxopj4WBMyDIkc53Pzw0HDyaAY1VknSuq88wPi6dem2Gi0LTTBe/bumUcwFv0kGPSflOIMpQqUCxYFR3gFweokbR8vLrh/wAP4CYIeCugAuDzkEHSwBUjbn9MOc0dIClkZDB8azbn4riYws23hSMUtIuEVJXTNwzD/wDImPWCPnjzjvCqVcaXUzHhYWKsOY/jY43eky7U1DTOoMQDEDYyLjC3j+Zq0T3vdGppB+Enw8pjrf6YjHJFnXUXcCodxUrSilRT8XdgqzXAkiYNiDI6e2LDmlFXLf8AoaR6HbFVpdolrOqBIV//ADNpUaSDfl4tPyxYOHkJUFMHWtRWC8tLqbj5EWHXHpwa64edK70rdSqUaNzI8t/PFhTJ0npgqsHexvJ5g/ziqZlR34LKyGCCCZ0E2tO/lgCvVztGqFpZjUSJVZk6SJgqRBwHNJ0FRvTpeWrhdB1TqlRP+4Dn0m/lbDWmO8Wy3Wxvex3nymMcypdpxqC5qkKZUebSbSRAMbc/9uL52e4gGRWkT+qGkc4aTEyJPucc80qLwbvQXi/Z7L1VNQM1Gou7BQSI6iNvXC+vwx0Lqxp1Q8zNje4M8t/ti1U8mJIInUDIPPocA5+hKip+pSVJIuRNtrWjEVJ+FXFXZTKnZ6qtOGrMKKglUAXwDoZFxI+uIqGYULZVqHTKkP1/3AfD/bFlzNHvFNI7MLGJ/wA2JGF68HFJQNQYpYEDYXsRNtxf0w0Wvosov4AvXL6jCifUAenliPKcPV4awOxXneb9Isfng1+Hw6Bj4XJjkB1t6T8sa1yAYpEgkQAwIM9cO2vglNAuVzYpsVJkG1za3S378sNK3GadNy1tWkCYsINxb8thZlaTOz09Ukb6b+/t++AuN8ESAwrhSCAxDfCCDJ3Anf5jE2lYadYEcZ7QM/6jBIJCjfzMXNo8sLXz6QAWJBizDUBO3+Dix0sqndinRKlIjcX6ljhJnuDUJHOobDSYBM7RG3nsIOC1gOv6wujm5EEwQJ3AtPTpjKDM5grOnlO1/rgTLZCornW4bSAQsgWt5jDqo6eJgDTM8xGqLzbywmGSr1gNbhve95/TC6doO4k3NrGeX84W5MmkpDKLEyP4/OeHFLOKp8R8JsG5Sd7+YwBnKQOoSBBgE7+gOCrTGlTRHl80tQtbflECAbGef+ce1mE6AT7bGdpwlr13YlVYiOXUzsOuJWNWymY3uNvMciP5xvpF+hVRmpCQhljBPNvXpacDVuN6HATmSCOYtY/fAIzLqzBWcg7gbeLeRt74kd0LSygFhN5B+c4cDSTDcpxB1MMygW+K9oHoT0wRn8yCrA2031LzF48wPeT7YX5bugQWeRG+mR0t6dcS54IaZPeHTG1jsehM74DbszRmXoisjRqJCC8/EAyTYmx+4wSlekoINPwjYLY6hAsY33MzgLgGYBJQ1LlSAADyE7AeXXEebzSKujRLbh5An1F/vgN2zUyKvmpKuB4pj5befTEdLKdXC+R++IXq6lLBbBgJ8yP7Y9VrCQCfOf2wzlXgTpdTiinRrJ0gmTE7g9B59MRdzS/TpVWOwgyBtaZ2E/PEecyFMMUBckRAAknz8/phNmandkabkNF0E3vAnY3OC4r0p2GGe4Y0DSpMncHkefzE+uGWWzmaoqVan/qKJAMWBANxG3WPbA3AM1UB/q0iosJJ5db73mfWMZQ7UpTqd3oWpTnSpAIkjYT/ADOFTY1E54rl3IUoaQAiCbr5mQCdh5HBWWrGkQaTalJuDI3G56euBG4j3rWCXFqRAJWN4aIM+eGQ7R0CI7syBElIgARyPLbD0wYFZTNyyhibib3gm8T6Wx7xCkwBuWs0LNpiw9Jj5YEz9JFcsBYqDa2x6xP1xHms8rBBLrf4j4rgWmYO+JKOjuSqhPWzhULUSFJJjYgrMAWxOvEaUiFCVGYMhgQXAGoeRYCPOBiuvRqUWYaQ66pgCJBN7EyDPPGr8WRNSsp7xJ0mLRYyTytB+W2OyMkkcrTbwd9pslRNcsUQ6xrgrubz/j1wEcqggpTW1rbR5RfDntDS/wBTRpV1JCtDqw3VgBIPowa3nitPmtWkFWDoROkSDJgwPr74paFSZYjkKNdSKieGSQCbiQJgi+98S9k8p3H9LwxqJUiJJ5HVttII9cJsvxKxU0ahN+QEW82Ee2CqfEkFPXpKspEJbb2sb+fM4jPq2UhaVl4WnSYsaiLKgiSNuYt5j64DzOaUMUDeEkyt7Hb+LeeJ8lme8pq23l/6tLefKcC8VyS95rG4WIG0cvWOXS+ORraOq7RIulioZVMC0DniPugrGUHiEMY3HK/p674CoVSCpMAKJ336b++GOcqB1VxsfvgXUqMtVCdMuGIomXme7kwSBPKTBUg7HzxC+QZdKzqaYJ9ZufacQ5rNrUKVRqBRnTUDsyEXEHe5v5DFt7M50ZmlUp1oNUf8wABoMQZjrzx0PitWiK5NplHFPuqrgAmY8MfEq74WcaqCo4qaFqUhp7ym0oymIJBHn1xYUdqpMgK9F1B6sQCTA2iAcSUGWs7B5E2eQV3tzNvriMk0Vi0/CucPzdZQlGnSTQT4Hc3M9IIJFufnh4KQpKCRpYwSdUk84HSPlg3jvD+6pjwlyl162Nt/7euBMxkyVD1PCxHwyLW/6TAPvjcb/Q8iSI62dpVQaQGl2EkgXPqT574S5jJNTckNI+VxFiOt7EfTEvFsyRU2AUKNMiItBjlzOA3zC1YdQQyiJ3HuZ9frhZrcIN9sNqtcMYZdIkXYx9NsbUqLM8U1Jvt0HMz1xBkOHuXLkaltqLfT3/jFhQ0+71liDBjlNyALfPDL/R0sKvUyRUsDMzckFRuLSRB/zgU5eSIY/wBPa/v64uuWommoJuxabmYBAtH7eeBc1wumYBXTMzp8ieXpGH6P1CyoRO5IOljAGx+GQPO3S2E9XO6rsNTbQef8YsFTgdZG7tHBXoYuD5nHmZ4TT0w9ITa6iP8APPAUX9EUV9KtWR9NMaWDEtAHKDt9jgirl3FMFhJ1GxN4j82w6AWmAoBkTEifi33vgQ1JEBTdlWy82DeeA2wttvADhys1ddKiTI0i1tJEW6j74FazG9wSJj9sWnhWTFKvl5p31gNMSBIEwLxfnjV8vSVnYk6gzSIuIJHQ4K0ahfw3Ld5Tgh9IqKXKrJ0wbAczMfPFoo9mF0j+ix/7262m1rRibIZ0Ii6aY1m5J5XPPpAJwJT7TVDIp0tYBjUCYnnEeeG6/psLNwypSrL3bfpZhAkOoM2MXHKxwJxHhyUqmvvFmJUEeKQbG4/28xfC2k7Zt9fwVF8PeoCJjkY3i3OMH8T4NWchgQ1rTvI3/IM4VWmM6fwH4xxlGVQhYErJubiSNje/74XZvhuXcACASLqbKWj7z54af8JJQq+45uQb7xfbcdMIqnCiyB1cTqjQSQRtJg9BPlfGsDiwZ+HVKaKVonXJnSfhAA87+UdTiIcbRW01gykm+tfuT++Damq6FypE3mZixkz1xpmcoGE1QpBnaTtz26YPYVe6T5jM5RzqTNaTAiKzKJ5jTMdDtiNq0kKM6R0UlGE+dgY98I14JTkGTBFh1uedrbYyp2bJV3DAAEQIMmb7bRY39MImVYzzPGySwqAA82W6yR+kzzIJ+eJ61ZYpsmmXQ6uc2NP/AOIX3xTH4Y9/ELDf/OLJkCiUgKk1AGIBILRPS1rAnFYzymTlBeotXAqrvkq1IOCyVNSgqIhus+hPvhDxI14FPTTEEtrEzMwCIIgQFt1w37DGk/fqHkshK3Novzwp4mdI8LcyJJJj+MWexIJtMgFbOuPBUTVeRpAMDnzGB3q5mrR7phBDhu8AvaZDXAg72HLDPg9NNYJAZiD4mczcbLyEi3pg5H7tKkjcD23E++ItNumXTSVoh4fV4gqApUB2F0EQLST8+fLBX/E+IIzM1JaosPA4gc5W3ntJ9sGdnMxqQRZQfDc3APOTzMkc7jDjiqs1hcHcHpYz5f2xJ2Vi1XhXKvEc6AP/AKdPQHUbz/1Dzx5Uz2eIBASnTibibAeR8uvPDFWOsECCNx0O8i/0xtxA+ATItGxHMj+PngU2wpqgfK5SomWenUjWrq8bj+qoNjHp7jFg/wDD/Lomuo7xq8BTzEXB9f3xU8/xb+imsme6pgxz0lln7YP7O15yZdJLLVJk+cT9sd/yjivbJe0HC1y2d712K02qDbmGBJO3kfrg7jmW1UKrAQxA0k8vC3tuJ+WF/wD4rO7Jl6gJA03I84wLw7tM+ZRqblFYppBiPECpuZj4Sx/7T1xz8qZfiaJeM8QfMZem7SrAQ4kWMg3jr54r2c4tmSyr3bMF3625xy5XPyxYeJcGqVGFOm6miCADqi0QZXT4yeV/lGIOJcAqDw5YkFeZMs1hYk7SenTHMnR0SjZVK+eMiSJLCQ0EqPzzGJMrnKoUqqgiT4hYHB1bJu47qvNOqsQQdxsCPt8sZkuFd0D/AFA+pgAN5O0HoR7Yd4c8ePdNqWVzFUKNYS5MG4573ud9sDVe9oopYrLTpAk+EXJY22OwGJ8m1epmGITxoFlNtJHL6RiXMcJeqmtzG/gIKkAQYFx8ow3wcjz3atGUKQ7EXJWIJ9SZ+WFeY7VViIUAAT8Vz87YaVuxZZS1MtESbj6yJwkznZx1iWLAxJSCL7bX38sDuZxRCe1uaMSymNvCMN+F8fqvBrimFFgAp1E8og29Yws4dwdVDM9lX9TGIuJ/OpxPVcM8U6bQpkM0qX/gfzsMNYM+DfM5o1KqulJtA/U1pHO2+/XBOUQEEJTFQkGVI2AnxWgg3tHljxMzWCGWWSQCALRPXyE7nlg/s1kt6rKomwANomNupwnVgy7B+F8LqB18DxE3hoEzBJvb323xJxXgtXVqEA1J/TIOr4rWmJ+2G+f4/l8u5BaSLFUGoiOsc/WMGZbNjMUdRDIs+BWgHzMA2vyw9fgbKu3Z2uwCVKtukDbl+omL7TF8b5bh1SmuilXUIthIX5/Di0U11BSHhtJU89hA/bbphPWpifvYb/LD9ULY34Fk4BIRVhvD6Hz9MPW4ejqSQsAzB5ennhXw8kfCwKgww5g+vMf3w+yVQaoMEMMRKleqcMp+IK7g7wTqHLrM7fXCDiuWrlmNOCAACDaZO8wZnw8uWLTxSmadUbgMCJH0/PLCjK5od4VZfC0ho3v+wP2xW7RL7RVq/AqtUd4tEAgnWFIksd/h8r4BpM4ZlLErtYbRbF2qmpSZmX4jB8IgSLEEmZ+mK/oguxC+hmRJOxEemF62Fk1LJd9TViE0KNJJMEXnY9R63wtzVFFdkaChF73t5fxgmtVRVCKrQwhgT+oX+uBM0hLqQk7NEE8mnbywFFozaAK1JKIqMo1aqUAWOk/7rnCqjmYpghjKsDA9I/c4eKxZnUqNIUmDAM2MHzsPphLRAQOfCwI+Hl5X64LjlgUvR72N4kqVucMbDSZjb5RGIc9XzFTvSlGEpySzzLXjwjYnywFwGowadaKNQKg72PLn7YdVjXXv5V3DPIKsBAA1bTtc+4w/ZqAFFOQq/wBUtgdQkCJUg2i351wZxPiDdxAJLMu68o5n2t8+mBENRWtTqsYJIcoRETPhiOeCamZVsvpqIZ56THxXEyL4TvYVGiXsxxUoUUhipsbW64vFXNo5C03BaV8JG8giPzpih9nssCQEUExMmWi4N4FiRYHzw+zPFcwhVEoDUX1aqikm07Qy29o9cJIeLwZZ+npMssGBf098KeN8QUIBNyZsCeX8+fPCp+1Wa7xkq00YibaY3I3mfXcbnEWfoZl5buaAXlZgSOUgMcPGwSktRlakzUlcqWTQPWzH2Hz54sXZgL/p6gQGA33Ejn64LyOQp1Mkn9KiGKsjEA77jeY5YbdiuFouTYAXLeLqYJAt6Y66rTl/w245le/4dpiSq2+4xzPszl9VXu2EuRAE2nznmBtGO+ZDhq90UYQOuOLdpuENQzB0DTDEq4535dMI4qVj24jj/wD0S0ndXSuCCNI7uVAURv8ADB9emN8l2oy06jUFok2ket/tOJ+AdoKVXTTrjTU21C2rzPL9vTBXF+ztFoFVFKnYwCPmfPpjlnBo6YTTN1Whmxrouji/iBn2v7YVZvhcVbiDY6uscz54zK0hklZqNM6af/mIIJK/7lvJ5+f2xYc9ku+XUDEqCBvy540PKNJbZT62VzdHMPWo0e8DKAw3DRzBGzc4bDOnWpOSxJ8XI7qxW6mecDfzxpks5VyMq9MtTZiYDEsp6qTZgRykRHpiftJxfKVKBioXZ7qaZEqydZ+G9oN74wPgSlMHKMIIGg3mCPmR6/zipZThWaMaKdmg6zbw/OfP2w67PcUVUAzJ1FZgxKyP+kX1eZHpiWlxFAwenU1Bi/8AS1CxERHMSDIvAvbotaB00LczwGgFAqEP/wBxPi6jkDtthfnkH9MU2DQZkmCRtf8AIwVxbO5dlKr4nMELPiUzziwtEz54gyPDlooS16jQACeRN4/th1EFvxBGcyzMkCooCkQANUmTYk7gfW2NclUzBYJ/UrLMtLKigRJuFMXgQDix8GUENUNMCTKk8geRX0vjzifD6ndeB1vuLqDPpP2wUFrBW2SSpLOFSABC7iOYsL7fxh1lkimulw9iNMAPfyA64W5Th+ZBDEUW6z4rjkASoA9gcWTIF+7CsgVyDqhdx7b2jAb0yQtWjpBMaCCI8Uwfafw40zFMzyM8/wAjDGoURTJHmJ6bb/vjyi1FhqLre/h0kDykYawUa53K6HLA788TqKkLURgCNwRYnfYeQN8NOIZYXMb3jC2jmBTBQgsDER9DhWhl+GnGBmGQljTgGYg+3nisMjF/iQE3Hii/v++LsKwqLpKkWi/Q/wAGMVLN5UBtJIlZFyZ+W2Nx/gOQgz9ZiQSxIkzHw3HkcKkquI1WkRJtI3GCOM5ISjhj0gG3W/nha1dlCnkGsDfzw0RJEgr00fSXB0m6taedid+W2J6tYOVYPpCzMDkRHSxxrnHSp4NCgaI+ek9dwQRfrgKpRamZ0kiwJHQWMjbbrhnFrRVJN0D5cIzOCPEQbERqHK/PC3P5NYAFYqOalhb2ttixcJyAFYHVIPU/DO9/pgfM8LpGodSgEAKVgbjr+csGUf42CMqbQJwjiBDqJFYrYFFMR5k2m3IYf16maDMFFPTUi5BJXwgSLjEWRIVoGlRtAHI417VcQanDAwxAAjzgYVxl1G7JywW5XKvLrUqEbyBad+cSTMdMHpwykELFtcRAYyBYCwmJERgdiCfh8V4/vgWqYLCoWlh4dO3nYHDvjyxVyPwd9n+Iopamuo6gv62AGk3kAwQR5dMOqjM7LcCwjnG8iY88UXh1IBTsTJFuUHFh7NsalWCSAJv5x/nA6r0yl8CuI8MmtIJOpFMm9gMFKsUwp6Een4cMq8F1/wCkADztiPtDw/QoIHnb3/8A5wileFXHLEvDc13bVMu/wuJUjkwuD77Yadk+NNSqtTO7cuUi5t5rJ9sI+M6gyvsR+DG3FILpWWBrgwOREY64ytackl1Z07P8TNNl1g6SRebDzwn7f5cGiGC3mfbGqZlalGmXJLU7aRfUGst+mwPmMMzGayh0jxJbxbgTz9sakhvcORlUmWAJ6fl8PeDcale4cwJ8JmwnrPLCzjuRNF9LKYO2FWXqQ28T5fbBnGMkThNxeHRRQ7xCrCKoBXUN45X5j6RgHg1epPcPK1EUaT+lwLEr0gxI5SMT9ncw1RBP/mU7X5jkD7YY53hy5nditifAxVlgeIgi+0WG8eWOKUaZ3qXZCbO54IRTqySxgDzjrsD5TOENGjlmqKi97TZm8WsWflE7GDPXzx7mMgVp/wCmLkuA12Ec7GdidjPvgvs9WSqpvpcABkYSouLgWKwwFwftgxj+iSZMmQy3eeFyGEFSrjqbdLX3nA3EclUcFP6Tw0h1hWHmdxFt59sT18iwDB2htIioHDbH9LFdVx1mD1wmocYaiwQUAV3BYnxx+pjziw9sCkGhtwvs+Y/q1CRO/Mny5/zhxXyqog0IVJOkEqZ+ZuOeA8v2waB3mVa5iaV4HW4H0xvX4ma2jSrosz4xB3jb89sBB+BKV0YlZgz1iYHOfnfBrK4TS5BEghoi295wBQy8Ge8IhiZsd/URhpSqKUDOy+bSAAQfPBZiXJZcgeIQN/w4PWrTAUllXkJI64XZzjVJFDKdZ56R6czF/TA47V5ZiACZ6Cm5n5LE74V2MqHdRkdSGKsptEiCPPlhS2RyH6kywPMAqAPpiYZymRPcVG8u5j/5AYXPmWkxRKidhTT9zO+MkZl0zwESP0/Y4QVmAbzBkeYO/wAjfDMZtWUEEFeZHT+xvhXxQqLlgALXNz6YyfwDX0Ymqhgj/GEnH6EVA42beB7H3jEuWzgAEz7qR9xibORUpkdMBOmGStFP4zWUqukGAf0gncWNvfCYZaqQIpsZNpH84dZKSzKd1MRPMT95wwSlNv3xSyaiVZ6LqQSsTax2PqDiWosrpEzBkjcbR8VrgnljXjOXZTIJx5wtz42bYLz67W88UUk1TJuDTtCnL8MYAsalWDsQ/n0w2rI3eM5uWAm0bCBb54h06QskxePc88M3M09ViCoB6giP74biiqJ8km2QZRdREC8jGnbjh1Tu6eoFZAIPocR8PzxpuNrHFn7Y5g18rSqERoaPZv74vXwmnWnOKGcenVWWJVhcm9+VuXPBYzIYQzKen9sSogHrj2nkHfxqgKLMkjY2t6jEnBpUmUU1Jq0C5nSsBiaZiRO0dZ2wfwbiHcnXqVtQMFW9sE1eDUqgBIJgbAcvKNsF8E7J0tWml3rM3JbAXglrxGmd+YPljnuV6dKgqwdcK4olV6ZG8mfXfbFi7QoXoaxuBI+YnEOW7HBFD0TprAAkON+qtBg7RIAxiZtWouDbSSGH+1tiD5X3xn7aD8plZ4iO8pahvF/Ufhwuyr66LJaUMgxePX54bUqbK2hhbaev5bCjhs081oJjUSnz2/b54vxvSHIvpcOyVXUqMR4GBU35g3/nFwyNFKZYIski88wbTHynFO7J0u5q1aLiAGVhPKefsYn1x0DLoDDiwv8A3+uG5HQvGjl3/iJQYOAdokfIfwcc8apDD5+mO+9rOHiooIA+FwSRJ2mB5/3xwbitIq0RFz+dNsMn2iJKNS0s/ZjiMVDvJEjVzIPKdzvi8ZSsdYZdzy+hB+uOVcEz6pUpsT8LfMGx+hPuBjplQlnCjmJ1R9D6455fp0Qfw845l6d7KbCLTaR9gYwiXs3RbMd4oYSNRCmFJmwKg7DeIwXxbMFKL8mKgCfXpyH0xtwKqfI2uR1GE0pSDc9lxHhAINp58xHyMYrGZyPd6ahjwgqSdgCZHp54tVZJRuoYH6zitZ9GLmi6rodYIPlP1/tgJ2qC4paVzNV6c6qTCp/u0/tcjrywPl+PVlYBTqCj4GnVCmd/fnguh2epoSRq1AwQDAj05jyx7V4DTIYkk9JP4cLdGqywcK7QZZwVc6GJ1aagiedjscZmcq1OtrQiojGShNm8wRbV7cr9cUyvkKtIeECoADKtcADbT0xahk6VJA1NbkTGowCwvbbng2CqLZkTSq0RVppHkywQRy/uMa5lz3qsqnYXAH15nFcyPEHUEKxW1xyJwS3EigLMxhRJnkOgwEEslfPBVJBk+Yj8+WKXV4rmHYtNRZOwBj1ECMSf8aNUAkAA2veRHK2IqHC6BFhHlJtgNU9Ct1HS6qCmRMlG9LeuE/HtQhqNIEkwSWOw5jeDtvg/LcQpZinAqL4uRtB6ieRwOM8pKUyQW8SkSLMsfe/yxgWJcnTLAy7arWtv8r4IoUmKnS7Bo2YfO0/vifMAK8i0/n564hYnWpLEj1/OcYDodWKjRVWfVuQCCOsTYb4JymaVj4ZIO9tj+csRCtl9bO5urX8RgfthYvaOmrFVEITYncz5DBsWtGPEsqrYXUuEaxUpL8RWU8z0nlbBlPigqwFQmdrR94xYeD5QHdRq5c+v3nDRYJJHM6zgGCCNPxTy9euCuEZhWBUkidiNvcYZ9ueBMlQ1iNNIkahPON/dpm53xSatYmoqqNIBIgHF4ciWHLKAfWzQDwpghudvcbeeGXEOLVGyqrLFGOlzOxU6liNpF5PpgTt5TVmRkaWCgzpgQQLdTH74W8NytRqLgVqYm+kvBttY7+xw7ck6MlGrJF30xUjqD9sXzh+bpUaaUgbRabHpck/XHOcjWqaoZWPMW/BhoMy7RYLH+5p+QGMk3TM8tFnzmcVaitC3528+f5thhkOIilWWorCxgif0m8fLFRbM2EtJHkLe2Czm6bDafUdDgThYYciR2+o8hai35x1B3H50GKD2tRqVbv1XUps6kWZYvO1xuPfG/DO1JGXVFo1DpESAQDHnEYVcb461SmQ9FgeW2/zxKEWnpSc01gSM1SfUA4KAAq2xiAfmDb54r3HV+HMIZvY+m30wroLUBkCL7HBFZ6hTQdIXph+qTxknyWtLbw/iAZqVcKArnRUO8hvD9Gj5jpi8UKJNJgr2PiEf7huBjl3C1buu6NwTaDt57eh9sXvhC1EIcHYzHI+GDboT4vXFnqJwkH5/MuWUXClA0dCphh8j9Mcs7ZcNZatRYNjq8o5R9sdM4txWqulitK0wYPPfnBxz7tRxx67EMqTEBlEGN7EnAUqVUGbRQ2qbCL46j2drlstTqAyV8LX5i3PqNJGKLkctS1y1Mt5a9PzgTh8aNPTpSgi/95b7jE3TGjIO7XUmeXRlgwV8QOwnbfkbeWBOFdpUpECpTIgQxRlYdeoItgLiGWBGwHoBgNMmtu8B2tIG3y2xN6VUy/f8ay5CsKqlW3M7fl8BcSNNmVlq05SdUuNuX554rhNHYqJFo0gfYDAuZzNPkoHthVSGfIxxxHMZcFnLKbQSDIm3T7+WFuZ4pSImmwO4iT7c7XwCaYcMwQaVEsbAAec/bB/Cuz1KtTL79NCz6zb0wOoVNgVbPDSZYbbc8DUa4cwMxUFrDXsL2v8AbHqZLLMdAqMSJ1KtFiVgxfTN8Mx2Up1AXoq6CAZMhWFtixkH5+2BSD2ZnCuG5itqKVyVG5gCT0kgycA8bpVlXu2Z5MAoQNhMEEAStgZxYzlMxUVKdMClpWDIsVBtbY/Ob4a0+ztVQurNPqkTo2ABmBN72OBSQ1too+Sr1qghKakL4QdRgkTyg+fPnj1qubFhSX/3H+MdMOQ8MU6jK0b8p6kCMBNwrMD/AJg87zf3GFxhtoV5Cnm8tV276kzEkRp0TM7mCCeVrwRGHNXK0WYtoBJIY8iTHUGx8/vyYUs2psQEjkb4k/0gYC4PmOeLdCXYrlTS1lLCD/3L87MPseuKv2r4rXoqQjzpjU0CSCbbWHn64v2cyKE2EE/qUwR/bHM+0PCq5LIA7KWtpBI9zFzODLjXoFyNeiXK9pDAWqsqOm/tyBnni08K4nSBWpoFMxtMmD1OKzluDR8Qg+eG+VywEbWwsM9ByST8LVk+0FFG1KomZmMT1+0dd3UZZFB3YtYDpyvzwhoMAb4Ly+ZIMgj89cUc0/hNNkXazOZqoqis1K1oWTvvvip5fKw4MyZxYeMVyxuZ9ML6Sc8CPok5si4oIgT+HfEdPLDQTf3wVml1NfBT09NPb67/ACw9tsjbFVOdpMchNsH06ItgRd8MaZttgWFI1akMF0KYJAxAzWmOY+s4L4W01Bc9PmMTlItCOl9yuXApKI5YQcYpyThiM4Aok8rQpv57YUcQzIM3n2P74VMrKqFhTAtY3GCDU88QXJtM4pH0hPwdcHUahPLF4yb25YpHB/iA+c/npi55WsNre/3x0fBYkHH/AIQZUW6T+2OYcZH9Q/4x0Lj+aXQdLaiJNp38/rjnXEQZvEnCSeGkQ5bfDumLC+EdCcNabYgWijXPITzwqy1DTU1qfFBEnodxg/OrbUeRkE/scecFegX0VKdRqnIfpMidwJB9/ljL0fqxPmOI5qnUYKEMwbgMbDkSJHti48JzeWakvf037+qbm6hpG9oSPXGZ+hTzCnLtQrUdI1eCGBC87Akn63xXcpQSnUZMoKdcE37xpNradGmReTJH8YzRRaFVKuTao2XquyU2PLSAOa3mCJ9saZOo1Oqwy9RXCDmIRl5QVgz72w2LPRBrtSpqhNwDpYPMXHO8XAm97YZ08jSzNGatML57/flt88CWBSsQ8G4/TR3K5eoKhBDIlQEOQAbSpOqD15jBeS7W8PVFWoMwo6EqACNz4SJws432fbL/ANfL1RtAgRDEBZ6Db54C4JxWgirSNDvarQGhZYmBHoB/JOFknVjqrLple0vCyCFqhYEnUH//AGwbQ7S5VwQhqVSouFEEeuptUY592j4TlQ6tUVsvqFlVdWv5DTby64S5JGqVVWio1sbNEmY2k22vhKYcOnt2nQPoWjVDMZ8bCwi/6egxMO00/wD3F8gCf45RhRwfg+eAhjTYSLM1wOgK3EcsMqnB6wJ/p6vMMh/+V8CgWxv3yiJE+Z/sBiDMcSQCTYD854hziDl4Tygz85/nFM48yBxqLO8wRtp6SD1x2f6cxYq/aWiJ0tq8gCf7YS5/j1dxFNdA6tc/LbANAW2AxKyYi+R/B1FC5zVdpqVCx+3oOWJ6FOOZ+ePdMY9Dx6YW7AzZjGJaVT82wG7efzx4rH8/nBJtm9ZpOPEOB2ucF8PyFWqxWkjOwEwOnXDolJHiG+Cs38GBVVlaGBBBuDb5zifOxpHI/fDJiUL1InBSHkJJ6dcCAY2SrUUhqcahtImP7+eEbGgtLYMii0QlUhHZtpkze7BQSAFjkLn1wZw3h1Cmr1mqiFEAXksbCATJ87c8UVeNZ1W8JWL7AfcjrjK/EM27rLLHTSCL8zAGI1KjuX/LC5/6gaVIbeYEEWHPxYHzFYkXj54U0qrTNRwTtZdgOgM8/wBumCqtQRvP/bGKIhKrw1L4iVr411jGUX8QAO+2KxISLJwtgBafOentiw0avQiI53xXuHsBsd4/zOCczWAEGFtebgD1ti3w0SPjucGjSjoT+o6gPaN8UrMuJPPDbiOcUiPDforewm0emENc7mcTkx0rZ6jgYsXZtaNVtFXUSVJUagPhMEEzAO1mI3wq7OClqllDvchWFlAvPQn1wfxXiFF6b1ahunwFbMZ3AiwFhvOFUcsskEZngy03BqRTGqwer8UwR4Qh+nQ7YfV6tMnu6XeGpA1gBgokWPw2E/qCza+Bey1CnUppmVV9biZqmWtItyjoQByxLVyme/1GtcyFpf7Vs3pJBnAHoWjL5jMJrpg1HQxBsoIkMA0oSYjeYjEWaohcwv8Aq6NCi1ZQodKmljEBixUiN/th2/aFcvFOo/d+IwX5g/qGmdQkydvbGuZyWVzSpWqZmlUamDcWQA7ypabDr0GM2FIH4hmRlnVAK1VWP9OEHhMXWTva8zfzwS/GNFQUjQqA1ImQCADHxEEhfQ4HznZCutApRzIrIwHgcQCN/Cw1EETIiLjCOrwE5aKrvVTLsf6lNJmT6nVBj/bOJP0dMuGb4AWUhKoWQR8FoO4MHpI98BcTyGVo0lB0U6p0otRALkGwebEf+rra8Yg4/WFGimay9aq1PZkfUREWJsSsW364UV+J98y6FpV6BWKiM5QyeUMJMG8/vg6sM0vSes9Elab5zvaiEnTRCrGoQTN45XnC2lkKruMvl67hFaWC0SQvO7atJN+s4tr9nSUAp0aFMmxaXZgBaLgTAsJ6YiyOSztBindrVoEkgh4dZvsQAQOk41ATFnF+D5jL0WqUs49QpfSy/bSTGFGV7ZhVAevVLQJMqt/IGmTHucXoLcr4QwwPmuzVGo2t8tSdjuxJBPrGBX4a/wBPM9kiQSkyekfScIm7Pso8FGXn/mVOXU6ZJxmMx0VZEFznCK4b4PLSm3qdR/Iwm4pVNJgGgE7ANqIHnGMxmEnFejRdgn+onnjxa3nOMxmJBZ7qnD3IdnmZNb1BTkeFYJJnYm4AGMxmHgrJtEHBuDmu5UtoCmCYm97AegOOicJ4fSyqGmm5u7Hcxy9ugx7jMMkNCK9Kd2zz1J8whd9I0WOksTB6D9zzwJSfJEX70+6j9jHzxmMxqN1RPToUlaVyqsCYGqozR6wwHsRjftLncno0UqSd6RBKA+EiDyMXE7g4zGYD9QWl1eFZarpHiEeuCaDn4ottjMZhGqJpL0IL+TfIY8V9RCqGJNh4RvjMZjI1EmbyFWmJqIVHUi3zFsCI/iHi03sfL3xmMxWJKeFs4VmADpkSQbxv5zG+I+MZ0LIF5Enlb2H19MeYzFmCJWG40XV1qURcQGBuOm/ttGM4Twk5hGZaqBlPw3nyJ6A++MxmI+nRQNlalSg7WSfhbUobaesx7YGGQfMf00BJLE+HYDmI9fPHuMwi3CniIeGcdzNBjSV5UHaoIj53GLHxnjlWnT1JmlZhumnT7qbzz3j9sZjMFP8Aiwv+yIOyWYFeuGqE1agAYNUuidbdZj9ueHee4XlDmKjNGpl01FCDSZEgrBBBNrg3x5jMEDwIp9pcvkqAopUZ31TDCDHLa0DbCF+M083W1ZhiV/5aBtI1H9RMXO0L/jHmMwv0b4dC4LnFipTYSttvMQRHSMUzLHK0Q1AnuyCULAwRBMMYuZsb9cZjMFiIh4z2hbQKILE2AcG8iwKx6+/TCGlX4ooLaq3n4lP0JJxmMxNlEyA1M3VZW0HUDILCCRaZNidxc9Mdk4ZxhXpq1zIm0b8/eZGMxmGoVs//2Q==',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdiBJbX33GYeIZQxnm_iUp7beJAvGlOCsS4A&s',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStEDbY0PhGQXKgd5bbwr8cQN0Z1Uft4zaASQ&s',
+        ],
+      },
+      'parasnath-hills': {
+        title: 'Parasnath Hills',
+        description:
+          'Parasnath Hills, the highest peak in Jharkhand at 1,365 meters (4,478 feet), are located in Giridih district on the Chota Nagpur Plateau. Known as Sammed Shikhar to Jains, it is one of their most sacred pilgrimage sites—20 of 24 Jain Tirthankaras attained salvation here, and the hill is dotted with ancient shrines and temples, some dating over 2,000 years. The Santhal tribe also revere it as Marang Buru, their supreme deity, holding annual festivals on the hill. Parasnath Hills feature lush forests, trekking routes, scenic vistas, and marble Jain temples like Svarna Bhadra Koot and Jal Mandir. Accessible by road and rail, it attracts both pilgrims and nature enthusiasts for its spiritual significance and remarkable biodiversity.',
+        images: [
+          'https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/9b09e4f561e8dd2954b42774ecb0bae8_1000x1000.jpg',
+          'https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcTzpCoFxb3Pi131H8GleTQClnEM4vQcNTSXCJpv-qfK-U_CqCyMBvCtg1qnnwp8NaqyASsFS2ovSPPGM9TunSyZGcTY7N0gVssisxFwoA',
+        ],
+      },
+      'betla-national-park': {
+        title: 'Betla National Park',
+        description:
+          'A revered wildlife sanctuary hosting diverse flora and fauna including elephants, tigers, and leopards, along with historic forts.',
+        images: [
+          'https://site.outlookindia.com/traveller/wp-content/uploads/2017/06/jharkhand1_Betla-NP_FI.jpg',
+        ],
+      },
+      'ranchi-lake': {
+        title: 'Ranchi Lake',
+        description:
+          'A tranquil urban lake with boating facilities and scenic surroundings perfect for relaxation right within Ranchi city.',
+        images: [
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo/o1/13/40/03/ranchi-lake.jpg',
+        ],
+      },
+      'jonha-falls': {
+        title: 'Jonha Falls',
+        description:
+          'A beautiful cascading waterfall located on the outskirts of Ranchi offering a peaceful escape amidst nature.',
+        images: [
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Jonha_falls.jpg/960px-Jonha_falls.jpg',
+        ],
+      },
+      'rajrappa-temple': {
+        title: 'Rajrappa Temple',
+        description:
+          'A famous pilgrimage temple situated at the confluence of rivers Damodar and Bhairavi, known for its spiritual significance.',
+        images: [
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Chinnastic_Temple_Rajrappa.jpg',
+        ],
+      },
+      'canary-hills': {
+        title: 'Canary Hills',
+        description:
+          'Canary Hill, located about 3 km from Hazaribagh town in Jharkhand, is a prominent hill known for its natural beauty and panoramic views of the city and surrounding forests. Rising approximately 2,016 feet (615 meters) above sea level, the hill offers a challenging climb with over 570 stairs leading to the summit, where a watchtower and rest areas await visitors. Canary Hill is famed for its rich greenery, three small lakes, and serene environment, making it an ideal picnic and trekking spot throughout the year. Historically, it was a favored retreat during British colonial times. The name of hill is believed to derive from the local term "Kanhari" and it serves as both a natural landmark and a cultural symbol for the region. The surrounding forest supports diverse flora and fauna, and conservation efforts are in place to maintain its ecology.',
+        images: [
+          'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTEhMWFhUXGRgbGRgYGBoaGhodHRgeFxsYHx8aHiggGB4lHRgaITEiJSkrLi4uGh8zODMtNygtLisBCgoKDg0OGhAQGy0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAL4BCQMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAADBAECBQAGB//EAEAQAAECBAQDBQcEAAQEBwAAAAECEQADITEEEkFRYXGBBSKRofATMrHB0eHxBhRCUiNiktJTY4KiFRYzVJOy4v/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/8QAIREBAQEBAQADAQACAwAAAAAAAAERAiESMUEDUWEiM4H/2gAMAwEAAhEDEQA/APAFUc8UBiyd46POuDEgQIRYQReLPFEkRwVAXTMa8XC/TRRPOOgDJMWQsG8CTS/lE5auHioLm9axdCxwhdS/jFyBf4QBwWq3wpEhjwPDnAGreLIu+sAe5e4tR4lWGX05tyiiFaVro2sXEwkAEW1I+d4JjipaaEHrFxiSA1CDw1+sWGLWBWvhFEzb0SXOjeUASTPVdPX8bQWXNfXi0BWS5OUDWzRROLYlwGtSkA0Jgqyh5xYTfsWvWF5s4KHcRa7C3hUjWLS5xAu4Nx1beAbE8em9fmOWsPa/IfH5QrnAt8iIqiawGvI2+sEaCVcPzdo72hH8b39PCYU1XN+HpuMT7TiRtWzwDomjj61iyp/KE0zyL1P348IIJvQ+X4tANmZuHpEhfCnxDvCaJp1If4/KJ9q1H9aMx4wDuZxeu9evwgcpZ1TTh8YV/cE0ez7UiqVq306/cQDhXT0PXjFHTsfE/wC2E1qPXzgXtZmx8B9IDzkSlUTliSg84jo4DxiC0c4Fw3jFzLBr5QRGUbxJLRCSIIhGrGA5NY5qxRZjs5teAKjaLpm7wsJjGDg5jUeJiC0uZ4cdIIoDaFmAhhk5dc3ls28USwixl8eUDlzGoYlBIdg446QQUnf1pFQS9TXjWOEwNtX00VKxd6uNICUTNzF5aaOOjVr0eJVlKXYv6+sQhDU1FbQF5U02JPWnU1pFlng/Fy8A9ko1u9qeHKCZiK/N6/KAK4Dm1qa82MUSWt4evhFErpf1sx5/GLIBP8vP0X+0UFSqxe4+2vqsWznpeoPyF3gaphyEuTcH4+ucSZhykPe0QFK8pN97+dYgLAuOu/nAswep090u8XKBZr6m3KsVF8w0I9GKhdLeFxvAv2+xBq3xjlIYhqEbV1G0BK1gHj60g0ue9zzLHpAUmhB5igi6nFUjy+mr/GAIVbFL+hEkuNPGFhNtmDcdYhw9Sw108vVoBgE2ccNeOlY7KN1ef0hYAO4Iv6+cTmP94DISniNKerR1rGBhBatYlKgRQfP5Rz10wc8T0jlrDQH2tKs3L18YkTAWpzsPlaGmJSIMh75vKKhCK10tT4xVQsUq51Dj6xflExcFq0MQS/0iNOfreBylF6RdBZagDxixQ5d2PraKTVa2MSmYGDvz+8EWUWO8XmTCKGuxiqS9oiZNFKCj/eCjmwZiPVKxAoX3iZZJFU0FS2nraBBTlrMTDUFSnMbh+NIkSSlqGvD6wFKDofXKCysaoXqzwGj2LITMKkqWmWMvvKLAHMCK2DsUvpE9qYNciay75Q1lBqsXDg240icHh1LlTChJLqSWSHol8woLd8H/AKYzRMsznhfjGJ7d10vnMmf+ihbDLXh9YskvUUO7enhnH49C0IlhJSZRyvQhTUJdgQ+1dNoRSoVBPX16tGubb9s9yS+UzL4srmH+d4sAk0KWqW7xD9BfTjCaZlBXgR+dPrFki4zaPYmvNvVI0yupTFyrmCH8DFivUEihAr5RQzVNSp5DzDP8Y6YXAIDEG1+GsEWSslnUHB502iZbAVJcHVm8Lx2VNCoFI1bTi1j6rFp+Ef3VBQNQFEAnobQ1US1JFHNeJ8OMXMwAswDWLdHcfeF1S1OGFQLNpoQwrA5YVVgWqx12+Xp4IdUom3xZ6c+HzgRSQxe3Ow30iHFDmqfDpp4mDy5AcAKSpRegLDkM2tWdmreGhYzdLgna3SDFVaA5bu9K6wFAY1ChWn0FLwX2xBLvt0rfxgBmiq6j51gbD+w8Iuqcqxo++sW9gN1eI+kUYkqbwrvHTTmNPegCHhhCBfXy+8cnQMTiKFz8IL7N7RC5ILtT4eEVCWo5gKlZTSCS8QdfWkBWguOcVUkb/KL9hpcwj3dfWkTLxRsa84DKD9NfxBJaU5gMl732Z/n0jP0C5wRWnEeqxTMwo/lFvYJBAJ/0387COnSg3cJO4On206Q0xwmeG+0TIll3bzanWFpYIpbjpDqmb3nbhtXnFvWGGZMzKUvmSLMDzdjziuJalG2KdXYjnvuHbSBS5jvR662oG1g65pADsSXNRv8AevjGJcomTJGYkKA5gPfnSLYSQQapIL93jy35wD2iX7qSAaVIKX+kaHYiDnSCAQSyTqlwpxQ7iN2+LxNvr1fYIUgMKG5A3hP9Q9iEKGIlCl5iQ1DfMN3IYjcg6xm9i9pzVLlsAApRDsrYnU1FGgy+3J0xM8lWRSQMmQN/P3g9bBnG8cOZ1Lr199cdc5jJmKY5kHuqrlBdnYkNoxcdOsaHZGBlj/ExBSBcJNFGhU5G1Dzbx8/InMS7l3di3Vz4w7O7UzoRLUPdd1akUyjmK12aOvc6syPP/Prnm/KqTaklLXLppQH4s0csMMzg73Gvq0KrlEEs52Nni6SQGU4f00dI40VSrOAfPjvHIXVgNNKWjgARVvCBS5mgLb8YqGfaqruOnL0IsC9SXPCFFTLFtOkTMmNWgNGIf8QD2YvTnWBTZhKbB3ckfDbyhYTlEFTEtz8ot7UtUEP+YBiTNYMqtiPH1atIupQKGFQTVnqd7vCxm0FH8LfEdIiTMoyBWmpbmdL7wF1ymdgocRXW0UJFQTUUOvhEy55BL0IuNYmZOD1Ar51pDQdEw1GgF9+PNtoBmRw/7vrF5oJALsBpy04RX96n+if9S/rDRhAsYKFjUHhAFxWM46GDM4xRXOBmJaGA2dqCKKU7OIgWPMD4/SJHdsxgKhTQeVMIqFebUELQQpAIc04XuYUHSpRqUkjTX6va/CLLKwAQSxtoTtz/ABwg0kZkkMKdNWqdDX7x2JXkdAJKhd6AWpx8rxgJJclmrrvBkEa+dInD1U6gC4qAWb4CCZ0gW5uPCusWgCSy22Py21+8Wl+0U+UPuQ1L3NhrFyAZqXDpo4qLJYV6RtSZsqWmoATdKb+OpOYEVuwsKiW43zzpGQj2ZQZwIChRiHKSW0D+O0ey7MwUhKAtKgo0LkgMx0BNn53j57i8Spcz2i7k7imgjb/S6yUlDl3LDMwYAWJt7z9OUZ65ua6fz6kuPoc2VJqUy5f8WYy6NRxtSjwnI7MSJpWtIEkitf6qWQ2V6HMm5HutGYZASyU5s6U5iM2hNA4oSNdW4CN+XiZaBLSUsVDuuXZhmfVy+mjdI5ex2yV479SSMMCfZrSpX9GJWn+zlJagYuov3dY85Nl5WLuK6Wt8Yp20MuJnj/mzP/uTp0gmFmKZxmABqRatuAqbR3mx4+varJUogsFEBrerwSZPzX3tra24tEmYSQpmU7FmAvqLbecdPm9+ocmm/gbkG9Yvy9Zw1OSSwJBFndyP8p8PKEZ0gJNyRDGEJzDvJNQKuCw2ZqRBTlzJJyg2eoap8Yc9fhYqZKWdJBc2JYxZMrM9Go99ud4Xxc003GrNT18Yvg3BzVIY2DvG2USU6uNaWiROBUzUudnHwgqmLLQBT3kvYipPIjwaApYlnLm23KGhieq7PUeb1EBwy97WtWLS0FiCpz/W1rjcEU8IERTNrX8cfzAMLw4USSqujbbfKAT0kUzCh39cYmUtWUK4t61EUnkLdX8tW1igomqTw+fKD/vD6AjpE5qMCCGr5V1jnR/QeH2gMJLGkXVg1gOR8IMmVlFaW1rZ3h3s/KSVFVRZvjHLrvPptlnDkNUdYLIkJYlRtRhypGgrEZiQouNhp4wtNlJJOVwnkSX1Gz84k6t+xCZaE925Vvp6+sDMhPPgNfG3OGUylI73eGjlAN6WL786wKXh1AZiksOh8DF2f5AzIH8UHiS9ub1iv7QsXvoxsNXpXxhictJ9wEnNRzpyhmZLVLRZNvedzU+ML1ikpEhV2IZmYsdriJxc15hUB7ylE71cn4xzKUynDioJejWrZ4Lj8omLdi5cWarLHkYmoXWsMA4HMUY6vcxyVMHYMzPUdeMSicynDd3evg8XWsqSxZ3JbpS1jfxi6AzpoJo6uJbzpeNHsiX7ZBlKJNQ1ajyN6eBhI4fMKMOFoZwYbupS5VRgnMTo9LHXcRLfGublX7T7JRLcAuebmDdhylImhJBT712P8R9Izp4XmUli4plN6UIbhWNvsmXISpBWtgUmjsdrmhFDeJbk9b5968PrmgYhioH/AAgbU98pIYW0jUx80A4NQILKIpUMclPAn0Yy5aZBxAmicn2aZeQDOnO+bNqySHJjS7SmSFiUhM0JyqBBOUu2hawoKk6aRzvUeiTyvHfqWQU4hZYgKykbe6l/OFRPKUgB2dzTZ2o9bkV4x7Lt81CZiBlUAAoBmahDBstNa3qN8Ttx5gBSUgB2SaGgDJ/q3SN897PXn/pxJ1crLwyndTi1npag5gtQ34RTEqIADli7+X0geHGUKzBqgMaEa7ih34QdUsLRQ14ni+3rrGv1yASsjMOh5Q5LmFaACW7xqW2F3jLUojn5w1JWGAPvZuvrnFs/Rpy8NoyZjEg0LgjrXyhTETChQYkgjUcbceMRhQrOG53Y8aP8IaxkxCwc3dUVW1cDj4eEJbvoUnYke8Llwrid241eIk4m2oN9/TQPFpAAFSLub15QKVNLho2yfXP7pBA4ENmDl7349Y6QsG4v48+cBMhSgSz6jLV4HJmVY9X9UMAxIxDF3P8AmptHDu2I58D8NY5cxOVwkBWhFOP1hrAyQtPeXX+p8dL89IaYXRLck0Vwsai/OO9jL3P/AGw5M7PUhJWKhN9wDXkRyMIZk/1T5fSLLqYVnrSwDxVSstEjr65xdMtTObHdqw4vJkdYY0yhLClXc6m0c/p0kZ9bnpDfZ80gvqHPL78YEEg2sGd6tXlB0IQe93r2uVNowoB94nV8BZ00BIJBVMUQpJzWF/dGtbnwiktRKS9d3FdqP1jv3DBmpuUhyztzgEqcoquwZ6n1rEs8DkpIKSlQSkmrMM1qmlQGFt2pFO0Jbpd2OxPDjY+qRSUSVukixcnTjxuIWxamVd6+PnGfuhmdOKUpDMABept5QorvVPh0YRClv3jfTnFfaBq63jc5xE5yK1h2SQpICrfDwt+IDOwpCXat6bPx/MEMpKFNlLs5dTV0NfpC5RVKMhcGhDkaja+vrWGMJiWVmAUCBcEihd66+V4BKUbMGO1fjeLqSVqPdPMcd+sZqj4WSsrKk1cM7tyPHT4RC05/8MMAg3ND7rUo9coMN4DBKOWXLJK1UALAGn+b3WDmGVfpydKOclN6gl3AsQwbWM61JWXjcOlKAygVO2UCoBSCFP8AERfBGRdS1yyke8ASFKqGP9Q1KbwHHkmaVBJNwzEs1x0aLyu2ly1qJSkKUAmwACaUYcOMam4y1cBOE9Bw0wgKYFD7kAiugr9jF09i4mXeUDlUCMpCknSgNQRe28U7D7eEpsiBmKqXqdiq1PGPV9l4nMxPvMC93HEDT5XrHLu/F24nPXl+3nJ2B9sAfZqD912sXs5A42rHnsX2XMlzMiEF1EhmYhQ0rpqDHsMV2zkmTSlacwWyUWFqqUTVrCj10ArHnMb2lMmzM5BUQ1UpowIobUYBnjXGxjuczyMnE4coUM6WdL5Sw60tvAsNuGp09XtG/wC2lzMyF1INM1KEkjlzYi4aEZ2GJFEj/oS5sP6+8C+uo8dzvfthJkk1FCKlKiymo1WoPvC6cMtSytQSili7WbV9A/oRrSpRUsg2JSSMtEggE5h/BsxqYLjJaQkZilwAkpKcpJJdLkPYXYl+IrE+eUx5rGAhgrmKvTpFsL2dNUkrQlwOIc6UDuY3RhEzg/dzIcJbhViFXf1WEJE3Io91mNb00pXr1jpO9niZhZE4pfKCDY0bo2h84cm/4rJOXPVlPS4oeubk8AM0qU7NUk+N3PLWJU1PZliR3u841D2c8Il+xSXhSAM5ICg4bwq+o24xRCClXecpNQoP57GtjD+HmuFIVYNWl9xTlxvCqZpdQemoNwbH0Y1Lb9pWhKnZksGTq7Pzpx134xnfsFbnwMQiXd3YN3hapbaG/Yj+yvERfr6CsqX3anusWa76U0D3fcxxUFJ71A7AABz6+cXlpUklBqzuBu7AP4xnzZhzOXjGfjdq84s4SGHG8ctwKHr8YuqSo1SHHp4vMlgJZXHW/LpDWQJaMzE0Pr16ePSfpTCS1e0mTlAS0OX4gai2vWMPATcqT3AokEAnQlqjoD4wIkju5qPVOhNn5w6m+NS5dNdr40TJpUlwlgKs7Pct94Dg8NmIWr3Robqv9IvI7OXM91OmtPjrDmElCYPZBSZdHJVcnhvc9HjNv5DLfaWxBKge53d+PPf6wkVMp2SWHAiHe0cOqX3CUqs2U1r6G94SMkgDjcW0+Ea5mM1XkXp4cOUV9oQWOlvWsHRLagpELSGDtrX7RdFJcxmtp8eEMSVMVFJPH8RREsB8prWnz8hE4LDFSwBdnd6NxMS2BnCTFAhaCQUurwBBJ1sbw9i+3JswXSClKgqtK0dIe7P16Pm9rIZYQ1QAC7XYPyrFsJKTMyoFGqotU8NtKRn81qWwXs2ZNZRBpuaXf8xRUj285RNABfkGA47Qx2zjElPsxYe6bUD3a8L9mLISXYJJdzvTTTn9oztz5IgYQJUxmGoo1DdLCtRd49F2FjkAIJKqkijM/euOVfHSM7CzpYBmTA7Euk7kCo5ZRQ6A7Q3JxchLpVLBBy/y3Dbhqh9Kk7vHPu3pYr2hMTm9ulIKSwmJYkEMwWCR3TX3XOlTWM7Dzy6hYH+PugDbu7ctobxEwicoy0p9mtPuqqLlwOotxhmTgsORaZLWQ5yn2g1SQyg4pGtyerbrExOMOVgKG4PeIqd3fnxjW7Lk/uVNnSgMzFXfs9EgVq21jCXauECBmC1Ke5KCCHDaUPMGFOzEgzEJZJClBNNATeN5LEnl9fQpP6YwxXnKpi1GhGYpSdXLVeu8bSEhJ/w0JSaVo7c9b2jxuB7bSR3FELSD3VGp5VcjlThHoJXaVhMo9lDXwpqNo5vZzOfwzjex5EwELQkElyUOhzvS5434xh9p/phypSZYW7PlUpyH1SpRqB/VVa0tHpEylEsmvOgg5lZA61sXZgL1ahP0izrPpOuOf187xfY6EoKpTy1JQrMlYBZgxKioODcsAbjr5pcgpAcDKf5JLjxfZn5x7JHa8yYlcwKBNcpS/wDVymjKBpR94CpBWnNMBZ0pOZNgpk53IGbR70cxZ/T/AC8tkv08cnE5aAvd6lq8jX7RUEqcu3r8xvYv9LkhXsknO7pAUFoWl2BSqlbFqmthGJPw4l6nM7MWuDXo0d+bL9MWNKXi2QEqAIGUN9ODeqRPspOw8Zn+6EESwblhS1fxUwb9ud/I/SFkRb25uo3q93ffjTygSlJUAVJoKc7xRTrLU5kgN4wYSkpZJIU4em+28c8/Wg8EcxZ6DhzAFYnGsX9V6xQUom72ux+cWXhVp/8AUo9WJGtQeEXPdQCUlSiEpF6R6FeDlyUJuqarZiQBctoSWaEOyZeYJSihQ6jTMSVUoLWTrfoI0JKjJJWpKwSFMVJIqLVIr04WtFrfPiZ+JmoltmCHslIqRqSr6PWMOdNN1EkWFacw9+cHxWOzO4q7mrOXJH+ZTFmc6WhCarNVur3tCTDrrQ0TCwLmhoPnt+IPOSCQWIbX1eFlVg2d+6TQa/GLYwYQ7ZgHY6ihFvraK4wDKkJLu6rblm5hh1hiXiAQQ5szdLP9flFZqQoAC41F32jMvoSkqykHb00FVOq+rfdoZnYdGQ00zAudnPx8jCciSSaRZnQakTSolRAU7guHAq/rryg6lslisgWAAA0Dq4GljDeEkBIUVnR3JAYC7A9KcqUpmYyXnWUozG+Vx3iHawhn43mRfNLINypzUkEAM+nF30gft3uzOx/EJLzJdJuLjbQwynC5SMxBBD0r0r6rCyRgVc2+o57/AJasXm4gJLJSxPM1q1zuR4RWYjIwyjQ8Ttzsb7QHDuZgUAWF7BuHDaJJqiCavMKZSPeLVs2ttoZM5QJY0dThRap0FaQDGTCa1UGDXIa1zpVucVTJVkBVQWAcd5yQSA4/rvVqQsHo8HjQ4Sp0oy3GWtGDZu6A9yGpSIMzDAuEgzKZTS7tvTiY8zKxNg4oaAB70a/HrBVzxQpSlweHm9N/zGfg1O69HIwuHCsyUMoKFSVMC7k1U1WZq8o3sRhUJCMmYHOAblLdeLVB0MeLwpISVlJLEEuugcFrGxsSd49Fg/1GUujMtPtEqqzpP8SWVbpHPL+uv8+/xuz8bOU0yUEiX7UpWWdQAUxfNRiB/EajnGXIlBU/NNVmPtE5SsklJzsQHqmhIhqV2omf7SSTMIWrMsizEWrQDuhNrAiNlc+ROSMyD7QKOWozApIZRIqQ7HYs0S/6dcty7rwXa/ZkiSpKUTZiQoOKhhoa6wPBzZkiZ3VrmJUCQksyhtq1QdPvfHdmGfKQ49nMqEBVlB2CaHu2YUrGz2dMzzCs5RnaoNTcmWCDcME8QYW5PXn7n/Lx57F9vHMEy5fs8gACQXZyxRYUJJpxjsbKkKk51+0zFh7yQQb1BFR47ONDdt4aSMSoTHSWBCx7x2JFcxtW8ZKpbgvS2tCWehcM/k0debMmMCyEoWkEpNA3dpZumlmJgGZP9/IRdSFJAD0ZyCKmtS1xTyhluMa9ZY8yalNGCv8AMHAfwr9o0uwuz0zDmmnuCjOz7inMRlrmFRoGpBsPiFoBSlTAkE9NmjSy+tvtvFYcqlhKVyzLUmwDZQpySn3s3nzhDt7GomreXma5Kgznk5oBSM5LFyTxreKqXExb1pjDoJckgCgJPNrXN9InErAJSQ6ufgaeNYAlVQddINOWCQQKgX9Xi7iaJggO8ogO4YWbV3bcacYRxE11EgMNolczakT7PL719AfpCT3UVGkWQoA1qfKKqU0Q1K/mKNCUXF6FxpRxT5wHMkPlNNKV26eqQrKm5S4cci3wg61M9OR+fgInxDUuaFUavPlWHcJ2fMYFilJJCRZR1US9mA+EZWEOUu1dDZvrHp8OoJGclylNUuUhINXfV6PuRwaJfHTiSke2UpQmWxzKKQoglyHYsrc0/qAOLPGIkEm48eMGxWJzuQ1Cw3PE8/r16UwQczB7Fnp61hEt2giUksAqrElwAAQ9AzvYVpfrDiJgS+YGrBwLdPPpFsKUsql2IJ0Hqv5hefNFa19P0+giX24yHPVmysxNbULX+8EUhq7jQufwacYXlB1UbmYYyF7OA/Wlba1HlF+kCVigDqQRXK4YhwAxpZt7mGMPN7pznujK4D6ORqHNOVYXVIBypSxL7gE282e+8EwSgkskpJLu9aaioAalftFyLBJuBcugUBIYJLUJNTpbW3SJOGcG1CBYaeZZoZw4SElOYNRiFM70IH9hbxFoX7RxC1LajABgANPi9b7xJfxXYOeSFhXeAFjzAzDV31htOLBQUhAIDlL1KcycqQnarFxGXIRmCk8Uno5f4A/9MNftwWzJoSlwCRclIBHSJZNRt9nfp5SVBSp7AMXRRw/9i1Ohj0fbM6UjCqmyV/4oLmYmuaoGUqACTXTeM/AypEqUr26QgIAY96YdgAz5OgNNoT7VXNxAKEF0Jr3lMSKBIyMCGO4fyjNmukuRno7QmL7oKiwIYBiAxcgDgVW34kxfE4rIGUhxdRBCVJr7wBZ1B7C4JBaNL9OSBJnlM1Xf/kkJLAEUrZ6Bi3CCdqyU4kHMAkglNDQlyK1/yu0c7ZpOd/fWb2oETcMuZMrMAdMwOy6gJbgXbLoXesYslIKQASkiqgS3hQ1538I9F+nZImyf2wSCQJzgtU5u6XFiAm/EQqOwFyszIVq6VAAjVJ1BAe4pSNSznYzYyZKwVgzHAy7BiBp4jyjT/ZYf/jSv9KIwJKFZiFhjWiifRArDvtR/dPhHSxmVlE+nifaRVQjmjoiZwYCKpLCLHaAqhAeSHq8PYHC51Amgoai/HZqE9ITw8glSQ4AcX+9IdXhZkwuKJFASpnGpu1b0pWJVhrEdkpR/iDMUJZ3qHIcBwBuDuyhSMOcsqJUdTGurFGUMiVKALZnZlEObN5xjzS5JZg9ANIvJVSH1g6ZNK2aJloGV6evxFyluvyv+KQtQPmxEQouQOEStTHjX71iP5VoOHygNnBlIAUQkKdISTYPqQxcXPQU3VxmNUpBSFBiXNaqckh+Ap6aAjFkuBQH15wupFHaM/vq6PISGpcVetuPrSC5uoF+Nfp6rC8kjW3X5QwEmtWYE1fx+UZqATpzG3KtGikydQJBcUJJAvty8qQ5h6qBapo3B620p8YMsSgsgBPEhiA5awLHlDZPxZGYmWQTozj5ac4slZqNTDXaAUzsGJ638NLwgXe+tY1PUqy5hU4vryO/Gjx3smFKZqO/Vmvt6MEw7OGFKg/WLYpBISALCpO5J+TRd9FVOA71DANo3wg6Ulxno99XZLAPxPTjCZJPdf16MOS5fdFHa7A6HiK09bwVUhaWZwLvqMrjoBm8YNIw6pjBwVHfaoq9OQ/ENS8VZzpTKb0LdGFuNYvhVZVreWcqkkpADh7tQ04cDHO9VcPdldpGSpIU59nncoYM7CrBy5BcXdtodwuHMycqYEJ9mupBogVfKCl2Ooar6Rj4PslZImzCpEtald8NnOpJegd7l+Ue67P7JlyDQqWmjFRBLaizEHavSF/23zLXmMUucqZ+8yUUAp01TfIltSwGu/FoZ7FxgTNDqACwl2dtaj+pzFusPfqiX3ZWTuVUgAG4ZxwFd6DMDGJjEBSELzATULyEV7xeoJo57ulwGMc+pq2WVufqpCEJTNlOmYCA4UUlQ0qdAeOpjv3kyfh197KpLGW6goggVcpFvefhXSuViZK8TLKWUVpNSBQOaE5dC2xjM7HDFaFqKSHSKVBKSk10AVqbC2sJPF6vuj47sibPWCEZVgMVGubvd09wllcGfoRDP/kXEf8r/AOX/APMbH6WwsxypSwAMrAqObbMWYkUCe7c03fXZX/uF+Cf9sWdWLz/OWPjskO8ctUCysYsBHpxwEUpqip0gBMGsAoXc+TfXyik0Oxigijq0WViSQAoWFGp6HKBExyA5EME5i1YqEwZaNdoE9YguQw30+b/GOlzLmnr15RdAoRtX14wBFzERc1rBJoOV2oTej8vImLKlgMNbeJMcuXvy8yYaoSKWvEoSfp62gmCUCsAijjrzh7tLFZjlTQA2YCvSFoSkyyX4xbGlghxVmFahlE8WqqBjEMDU1JFhYCpvx+MLE7Q+NB0rKqChOxYerVgiJRSoghiGceviKROHwhUCXFnJq+8FwxCk5Q9KkvoKM33h19NOUoWvCww4KiHuLV5wSZPFQB3kvUnnpyi2DV3VLYHukDyc+cZnkZwpL4UhpIDXHm49fOKEDKT6rWKolOAdmv4/SLfRMyW3uVuC1aGLYaZ3u89Aa1zb9LxHtGLAVPr5/GDSz3UgO9TW1a+uUTRr/p0tPzqylIS4zDR9WHd9CseqxyTNIEs95Vu9lQH/AJM+ga7R539L9nCYASSHGYMW91RSx2941G9t/ZyMEJacqQKJJJu4ttSiT4xjrHf+e4x19kdz2KO+xzEvoUhhZrvRmoTSNrAS0SwlLuWIAdwCzsSagJoANrxn9o4s9xKAEiaFKSa07rVFH0sfuFeJVhpBmqIWpOUJU2pYOUhhu9XPCMXa7ZzPWd2tMmzcRkWsIlS1hCC7ZXuotUqLhyTp1hDG4uUhgguElkE/yJHeVW6bgczCfaeLKskxKUpKs5U38lAXPTzJjsCr2w74BUATwahHWpfkItnmvNetr0vYSigzCCpQWEHNlYuUvoRQPre9Xjz/AG2EjEkhNFgULjRiHKjq2vKH+y8U0+blDBQSWsGyhusZ36kZSwptCNeW9InM/wCTd/63uewcJMSkTJhSUrBSpIJLEqKkFL2ylRDBrvpDv/hZ/wCKr/Sn/dGD+mO0yuQkV7pKlHUsGp1GbmTGx+6PomJ15cd/5yfHY//Z',
+          'data:image/jpeg;base64,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',
+        ],
+      },
+      'netarhat-hill-station': {
+        title: 'Netarhat Hill Station',
+        description:
+          'Netarhat, known as the "Queen of Chotanagpur," is a scenic hill station in Latehar district, Jharkhand, located at about 1,128 meters (3,701 feet) on the Chotanagpur Plateau. Spread over a plateau 4 miles long and 2.5 miles broad, it is surrounded by thick forests of Sal, Mahua, Kendu, Eucalyptus, and Pine. The area is famous for spectacular sunrises, sunsets, and waterfalls like Lodh Falls—the highest in Jharkhand—and Upper Ghaghri Falls nearby.Netarhat offers trekking, picnic spots, wildlife sanctuaries, and viewpoints such as Magnolia and Sunrise Point. It also houses Netarhat Vidyalaya, a renowned residential school. Originally a British colonial retreat, the hill station remains relatively undiscovered by tourists, providing a tranquil environment with pleasant temperatures year-round. It serves as a gateway to nearby natural attractions like Betla National Park and Mahuadanr Wolf Sanctuary, supporting rich biodiversity and outdoor activities.',
+        images: [
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/58d12160-1f67-5867-b92e-3b81e62d3128/5bafebad-70a7-57b0-8777-b4952a1b04da.jpg',
+          'https://www.kiomoi.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fkmadmin%2Fimage%2Fupload%2Fc_scale%2Cw_1248%2Ff_auto%2Fv1724399030%2Fkiomoi%2Fnetarhat_jharkhand_tourism_8476.webp&w=3840&q=75',
+        ],
+      },
+      'trikut-pahar': {
+        title: 'Trikut Pahar',
+        description:
+          'Trikut Pahar, located about 15 km from Deoghar, Jharkhand, is a famous hill named after its three peaks dedicated to Hindu gods Brahma, Vishnu, and Shiva, with the highest peak reaching an elevation of 2,470 feet (around 750 meters). It is a significant Hindu pilgrimage site, closely associated with the Baidyanath Dham temple, one of the twelve Jyotirlingas. The hill offers thrilling trekking experiences with two peaks open for tourists, while the third is inaccessible due to steep slopes. Trikut Pahar also features the famous Trikutachal Mahadeva Temple and the hermitage of Sage Dayananda amidst dense forests. The hill’s natural beauty includes panoramic views, misty waterfalls during monsoons, and lush greenery. Historically and mythologically, it is linked to the story of Ravana from Ramayana, who reputedly landed here while carrying the Shiva lingam. Although the cable car service was halted after an accident in 2022, the site remains popular for trekking and pilgrimage.',
+        images: [
+          'https://media.assettype.com/outlooktraveller%2Fimport%2Foutlooktraveller%2Fpublic%2Fuploads%2Farticles%2Fexplore%2Fcover_final.jpg',
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/23a00b1c-3b2d-5542-91f5-d97e89d880c3/01a84265-e09c-5682-92ce-681c89a1afe2.jpg',
+        ],
+      },
+      'pahari-mandir': {
+        title: 'Pahari Mandir',
+        description:
+          'Pahari Mandir is a famous hilltop Shiva temple located in Ranchi, the capital city of Jharkhand, situated approximately 2,140 feet above sea level. The temple holds great religious significance and is especially crowded during festivals like Maha Shivaratri and important national days such as Independence Day and Republic Day when the tricolor is hoisted here. The temple complex spans around 26 acres and features a statue of Lord Shiva, attracting devotees who climb about 450 steps to reach the shrine. The site is also associated with a 50,000-year-old Nag Devta (serpent deity) site, adding to its spiritual importance. The temple premises have faced issues like damage caused by rats, leading to renovation and protection efforts recently. It provides panoramic views of Ranchi city and is a peaceful retreat known locally as "Pahadi Baba," cherished by locals and tourists alike.',
+        images: [
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a20df7c4-0b4b-5e73-ad03-c670f39fe9a1/e46c3e1e-48b4-5512-820f-4e0c02a964c7.jpg',
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/97ffad91-9c46-5ab8-9bdb-0c4208b053a4/1d0d588a-74a1-56f9-b151-6aac31a9b030.jpg',
+        ],
+      },
+      'bhuvaneswari-temple': {
+        title: 'Bhuvaneswari Temple',
+        description:
+          'Bhuvaneswari Temple, located atop Bhuvaneswari Hill in Telco Colony, Jamshedpur, Jharkhand, is dedicated to Goddess Bhuvaneswari, an incarnation of Goddess Parvati. Founded in 1978 by Swami Rangarajan, the temple showcases Dravidian architecture with a notable five-tiered Rajagopuram standing 64 feet tall, adorned with five kalasams (spires). The temple features an eight-pillared mandapam, each pillar symbolizing different incarnations of the goddess. At the core, there is a 32-foot-high sanctum sanctorum housing a grand statue of the Goddess. The temple offers panoramic views of Jamshedpur and a serene atmosphere for prayer and meditation. The site is a popular spiritual destination, blending tradition with modernity, attracting devotees and tourists alike. It is open from early morning to evening, with special rituals performed thrice daily in the South Indian style. The temple also includes shrines dedicated to deities like Lord Krishna, Ganesha, Hanuman, and Ayyappa.',
+        images: [
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/79571ae4-a7e7-5838-b87d-52d2166f8cb6/fe79b694-bf92-5dac-bfdd-c99b9dd63334.jpg',
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/785fa43f-f9d4-56df-b4d6-b412c8277077/c31a8069-4639-5f7b-ae3d-b0a94c0ca524.jpg',
+        ],
+      },
+      'baidyanath-temple': {
+        title: 'Baidyanath Temple',
+        description:
+          'Baidyanath Temple, located in Deoghar, Jharkhand, is one of the twelve Jyotirlingas—sacred abodes of Lord Shiva—and an important Hindu pilgrimage site. Also known as Baba Baidyanath Dham or Baba Dham, it is entwined with rich mythology and history dating back to as early as the 8th century AD. The temple complex features a 72-foot-tall pyramidal tower with three golden vessels atop, representing power of Shiva, and an inner sanctum housing the Jyotirlinga itself. Legend states that the demon king Ravana was healed by Lord Shiva here, earning Shiva the name "Baidyanath" (Lord of Physicians). The adjacent Shakti Peetha dedicated to Goddess Parvati marks the spot where her heart is believed to have fallen, symbolizing the divine unity of Shiva and Shakti. The annual Shravani Mela in the month of Shravan attracts millions of pilgrims who carry holy Ganges water over 100 kilometers to offer at the temple, making it one of Asia’s largest religious gatherings.',
+        images: [
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/bbaac23d-12d0-52cb-85e4-9ad215b054e7/300ea4ce-1b6e-554e-9505-f20cd54241fb.jpg',
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/81e5b55c-9e8a-511b-8dd2-dc94b7066ea1/01a84265-e09c-5682-92ce-681c89a1afe2.jpg',
+        ],
+      },
+       'naulakha-mandir': {
+        title: 'Naulakha Mandir',
+        description:
+          'Naulakha Mandir is a prominent temple located in Deoghar, Jharkhand, dedicated to Radha and Krishna. Built in 1940 by Rani Charushila of the Bengali royal family with a construction cost of nine lakh rupees—hence its name "Naulakha" meaning "nine lakhs"—the temple reflects a unique blend of traditional Hindu and neo-classical architectural styles inspired by the Ramakrishna Mission temple in Belur, West Bengal. The temple stands 146 feet tall and is made of granite and marble, featuring intricate carvings, pillars, and paintings illustrating Jain and Hindu scriptures. At its entrance, a sculpture of Rani Charushila welcomes visitors. Naulakha Mandir serves as a spiritual center for devotees and tourists, offering a peaceful environment for worship and meditation. The temple is famous for its detailed craftsmanship, serene ambiance, and rich cultural heritage, making it a significant landmark in religious tourism of Jharkhand.',
+        images: [
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/19875190-c8c8-5203-a518-0fb44f4177ba/fe79b694-bf92-5dac-bfdd-c99b9dd63334.jpg',
+          'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/ea4ebad9-adf4-5d45-80f3-57dc39bade76/01a84265-e09c-5682-92ce-681c89a1afe2.jpg',
+        ],
+      },
+      'shakti-mandir': {
+        title: 'Shakti Mandir',
+        description:
+          'Shakti Mandir, located in Dhanbad, Jharkhand, India, is a revered Hindu temple dedicated to Goddess Durga, also known as the embodiment of Shakti or divine feminine power.',
+        images: [
+          'https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/ad4d1e0313e30dc1a266fa02135c2996_400x400.jpg',
+        ],
+      },
+      'harihar-dham': {
+        title: 'Harihar Dham',
+        description:
+          'Harihar Dham, located in Giridih district of Jharkhand, India, is a well-known pilgrimage site with the distinction of having the largest Shivalinga in the world.',
+        images: [
+          'https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/c9765edb38f5f94370d3fdec442261b8_400x400.jpg',
+        ],
+      },
+      'madhuvan-giridih': {
+        title: 'Madhuvan Giridih',
+        description:
+          'Madhuvan, located near Giridih in the state of Jharkhand, India, is renowned as a spiritual and scenic hotspot surrounded by verdant forests and majestic hills.',
+        images: [
+          'https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/08/3a72a439d0d6e37f0c56d3dd559d17d9_400x400.jpg',
+        ],
+      },
+      'river-cruise': {
+        title: 'River and Cruise Tourism',
+        description: 'Enjoy a serene river cruise amidst lush natural surroundings.',
+        images: [
+          'https://about2cruise.co.uk/wp-content/uploads/2025/04/sahibganj_cruise_ship_information.webp'
+        ],
+      },
+      'the-mountains': {
+        title: 'The Mountains',
+        description: 'Experience majestic mountain landscapes perfect for trekking and adventure.',
+        images: [
+          'https://pbs.twimg.com/media/F6UWjZRX0AA39Rv.jpg'
+        ],
+      },
+      'cultural-tourism': {
+        title: 'Cultural Tourism',
+        description: 'Discover rich culture and tribal heritage through local arts and traditions.',
+        images: [
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2k0n2VPbS3NwdMzTcF1uo6nr1Prm7Hw9jmFRwxzLH8ghSt2bbBebjJomS6r4NkWrrwrg&usqp=CAU'
+        ],
+      },
+      'wildlife': {
+        title: 'Wildlife',
+        description: 'Explore wildlife sanctuaries with diverse flora and fauna in natural habitats.',
+        images: [
+          'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/cd/29/fd/dsc-2726-1-largejpg.jpg?w=1000&h=800&s=1'
+        ],
+      },
+      'religious-tourism': {
+        title: 'Religious Tourism',
+        description: 'Visit sacred temples known for their spiritual significance and rituals.',
+        images: [
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Chhinnamastika_Temple_Rajrappa.jpg/1200px-Chhinnamastika_Temple_Rajrappa.jpg'
+        ],
+      },
+      'heritage-tourism': {
+        title: 'Heritage Tourism',
+        description: "Explore historical forts and landmarks that preserve Jharkhand's heritage.",
+        images: [
+          'https://upload.wikimedia.org/wikipedia/commons/1/1d/Palamau_Fort.jpg'
+        ],
+      }
+    };
+
+    // Map destination IDs to locations used for weather API query
+    const destinationWeatherLocations = {
+      'hundru-falls': 'Hundru',
+      'parasnath-hills': 'Giridih',
+      'betla-national-park': 'Palamu',
+      'ranchi-lake': 'Ranchi',
+      'jonha-falls': 'Ranchi',
+      'rajrappa-temple': 'Ramgarh',
+      'canary-hills': 'Hazaribagh',
+      'netarhat-hill-station': 'Latehar',
+      'trikut-pahar': 'Deoghar',
+      'pahari-mandir':'Ranchi',
+      'bhuvaneswari-temple':'Jamshedpur',
+      'baidyanath-temple':'Deoghar',
+      'naulakha-mandir':'Deoghar',
+      'shakti-mandir':'Dhanbad',
+      'harihar-dham':'Giridih',
+      'madhuvan-giridih':'Giridih',
+      'river-cruise': 'Sahibganj',
+      'the-mountains': 'Jharkhand',
+      'cultural-tourism': 'Ranchi',
+      'wildlife': 'Palamu',
+      'religious-tourism': 'Ramgarh',
+      'heritage-tourism': 'Palamu'
+    };
+    // Get page elements
+    pages = document.querySelectorAll('.page');
+    mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton = document.getElementById('mobile-menu-button');
+
+
+    // Function to show a specific page and hide others
+    function showPage(pageId) {
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      window.scrollTo(0, 0);
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+    // Fetch weather data for a location
+    async function fetchWeatherForLocation(location) {
+      if (!location) return null;
+      const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${encodeURIComponent(location)}&aqi=no`;
+      try {
+        const response = await fetch(URL);
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+        return data;
+      } catch (err) {
+        return null;
+      }
+    }
+    // Function to load destination details and switch to detail page
+    async function openDetailPage(id) {
+      const data = destinationsData[id];
+      if (!data) return;
+
+      const titleEl = document.getElementById('detail-title');
+      const descEl = document.getElementById('detail-description');
+      const imagesEl = document.getElementById('detail-images');
+
+      titleEl.textContent = data.title;
+      descEl.textContent = data.description;
+      imagesEl.innerHTML = '';
+      data.images.forEach((src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = data.title;
+        img.className = 'h-64 rounded-lg shadow-md flex-shrink-0';
+        imagesEl.appendChild(img);
+      });
+
+      // Insert or clear weather info container
+      let weatherEl = document.getElementById('detail-weather');
+      if (!weatherEl) {
+        weatherEl = document.createElement('div');
+        weatherEl.id = 'detail-weather';
+        weatherEl.className = 'mt-6 p-4 bg-blue-50 rounded-md shadow-inner max-w-md';
+        descEl.parentNode.insertBefore(weatherEl, descEl.nextSibling);
+      }
+      weatherEl.textContent = 'Loading weather information...';
+
+      const location = destinationWeatherLocations[id];
+      const weatherData = await fetchWeatherForLocation(location);
+
+      if (weatherData && weatherData.current) {
+        weatherEl.innerHTML = `
+          <h3 class="text-xl font-semibold mb-2">Live Weather in ${weatherData.location.name}, ${weatherData.location.region}</h3>
+          <p>🌡 Temperature: ${weatherData.current.temp_c}°C</p>
+          <p>🌤 Condition: ${weatherData.current.condition.text}</p> 
+          <img src="https:${weatherData.current.condition.icon}" alt="Weather icon" />
+          <p>🤔 Feels Like: ${weatherData.current.feelslike_c}°C</p>
+          <p>💨 Wind: ${weatherData.current.wind_kph} kph</p>
+          <p>💧 Humidity: ${weatherData.current.humidity}%</p>
+        `;
+      } else {
+        weatherEl.textContent = 'Weather data not available.';
+      }
+
+      showPage('detail-page');
+    }
+
+    // Escape key listener to go back to Explore (home) page
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        showPage('home');
+      }
+    });
+
+    // Search function for tourism page
+    function tourismSearch() {
+      const searchInput = document.getElementById('tourismSearchInput').value.trim().toLowerCase();
+      if (!searchInput) {
+        alert('Please enter a search term.');
+        return;
+      }
+
+      const keywordsToId = {
+         'hundru': 'hundru-falls',
+        'hudru': 'hundru-falls',
+        'parasnath': 'parasnath-hills',
+        'betla': 'betla-national-park',
+        'national park': 'betla-national-park',
+        'ranchi lake': 'ranchi-lake',
+        'ranchi': 'ranchi-lake',
+        'lake': 'ranchi-lake',
+        'jonha': 'jonha-falls',
+        'rajrappa': 'rajrappa-temple',
+        'temple': 'rajrappa-temple',
+        'canary':'canary-hills',
+        'netarhat':'netarhat-hill-station','hill station':'netarhat-hill-station','netarhat hill':'netarhat-hill-station',
+        'trikut':'trikut-pahar','pahar':'trikut-pahar',
+        'pahari':'pahari-mandir','pahari mandir':'pahari-mandir',
+        'bhuvaneswari':'bhuvaneswari-temple','bhuvaneswari temple':'bhuvaneswari-temple', 'baidyanath':'baidyanath-temple','baidyanath temple':'baidyanath-temple',
+        'naulakha':'naulakha-mandir','naulakha mandir':'naulakha-mandir',
+        'shakti':'shakti-mandir','shakti mandir':'shakti-mandir', 
+        'harihar':'harihar-dham','dham':'harihar-dham','harihar dham':'harihar-dham',
+        'madhuvan':'madhuvan-giridih','madhuban':'madhuvan-giridih','giridih':'madhuvan-giridih','madhuvan giridih':'madhuvan-giridih'
+      };
+
+      let matchedId = null;
+      for (const keyword in keywordsToId) {
+        if (searchInput.includes(keyword)) {
+          matchedId = keywordsToId[keyword];
+          break;
+        }
+      }
+
+      if (matchedId) {
+        openDetailPage(matchedId);
+      } else {
+        alert('No matching destination found. Please try another search term.');
+      }
+    }
+
+    document.getElementById('tourismSearchInput').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        tourismSearch();
+      }
+    });
+
+  </script>
+</body>
+
+</html>
+
+
+<!-- 2. Interactive Map & Routes -->
+<section id="map" class="page">
+  <!-- Faded background image for map page -->
+  <div class="map-faded-bg"></div>
+  <h2 class="text-3xl font-bold mb-10 text-center">🌏 Interactive Map &amp; Search</h2>
+  <div class="flex justify-center mb-6">
+    <input id="cityInputMap" type="text" placeholder="Enter city"
+      class="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+    <button onclick="searchLocation()" class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+      Search
+    </button>
+  </div>
+  <div id="mapContainer" class="rounded-xl shadow-lg mx-auto" style="height:500px; width:90%; max-width:960px;"></div>
+  <div id="errorMap" class="text-red-600 mt-4 text-center"></div>
+</section>
+
+
+<!-- 3. Cultural Calendar -->
+
+<section id="calendar" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Cultural Calendar</h2>
+  <div class="bg-white rounded-xl shadow-lg p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- January -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-pink-600">January (Tentative)</span>
+        <img
+          src="https://assets.thehansindia.com/h-upload/2024/01/15/1414758-fire.webp"
+          alt="Makar Sankranti" class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Makar Sankranti</h3>
+        <p class="mt-2 text-gray-600 text-sm">A festival celebrating the harvest and the sun's movement into Capricorn.
+          Marked by traditional songs, dances, and kite flying.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+      <!-- March-April -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-indigo-600">March-April (Tentative)</span>
+        <img src="https://i.pinimg.com/736x/42/01/c0/4201c0cc7727cf1d43ea6cfc8d146cb2.jpg"
+          alt="Sarhul Festival" class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Sarhul Festival</h3>
+        <p class="mt-2 text-gray-600 text-sm">A major tribal festival celebrating the arrival of spring. The Sal trees
+          are worshiped as a sign of respect for nature.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+      <!-- May-June -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-teal-600">May-June (Tentative)</span>
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_828/1661405451770999209.jpg"
+          alt="Jitiya Festival" class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Jitiya Festival</h3>
+        <p class="mt-2 text-gray-600 text-sm">A tribal festival where mothers fast and pray for the safety and longevity
+          of their children, celebrated with ritual songs and dances.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+      <!-- August-September -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-green-600">August-September (Tentative)</span>
+        <img src="https://utsav.gov.in/public/uploads/event_cover_image/event_683/166115539381102155.jpg" alt="Karam Festival"
+          class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Karam Festival</h3>
+        <p class="mt-2 text-gray-600 text-sm">Celebrated to invoke the Karam Devta (god of fate), this festival is
+          marked by singing, dancing, and the planting of a Karam tree branch.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+      <!-- October-November -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-orange-600">October-November (Tentative)</span>
+        <img src="https://www.amarchitrakatha.com/wp-content/uploads/2023/03/Sohrai-In-Article-2.png"
+          alt="Sohrai Festival" class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Sohrai Festival</h3>
+        <p class="mt-2 text-gray-600 text-sm">A harvest festival where tribal people paint their houses with beautiful
+          murals and worship livestock.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+      <!-- December -->
+      <div class="bg-gray-100 rounded-lg p-5">
+        <span class="text-sm font-semibold text-red-600">December (Tentative)</span>
+        <img src="https://indroyc.com/wp-content/uploads/2012/09/karma-celebrations.jpg" alt="Karma Puja"
+          class="w-full h-40 object-cover rounded-lg mb-4" />
+        <h3 class="text-xl font-bold mt-2 text-gray-800">Karma Puja</h3>
+        <p class="mt-2 text-gray-600 text-sm">A festival to worship the Karma tree, symbolizing youth and vitality,
+          including traditional dances and music around the tree.</p>
+        <button onclick="openModal('booking-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          a Village Tour</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 4. Local Experiences Marketplace -->
+<section id="marketplace" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Local Experiences Marketplace</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Example Experience Card -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <img class="w-full h-48 object-cover" src="https://placehold.co/600x400/D1D5DB/1F2937?text=Dokra+Artisan+Workshop"
+        alt="Dokra Art">
+      <div class="p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-gray-900">Dokra Artisan Workshop</h3>
+          <span class="text-sm font-medium text-green-600">$50/person</span>
+        </div>
+        <p class="mt-2 text-gray-600 text-sm">Learn the ancient art of Dokra metal casting directly from a local artisan
+          in a rural village. All materials provided.</p>
+        <button onclick="openModal('marketplace-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          Now</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <img class="w-full h-48 object-cover" src="https://placehold.co/600x400/D1D5DB/1F2937?text=Sustainable+Homestay"
+        alt="Homestay">
+      <div class="p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-gray-900">Sustainable Homestay</h3>
+          <span class="text-sm font-medium text-green-600">$30/night</span>
+        </div>
+        <p class="mt-2 text-gray-600 text-sm">Stay in a traditional mud house with a local family, enjoy home-cooked
+          meals, and learn about sustainable living practices.</p>
+        <button onclick="openModal('marketplace-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          Now</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <img class="w-full h-48 object-cover" src="https://placehold.co/600x400/D1D5DB/1F2937?text=Licensed+Local+Guide"
+        alt="Guide">
+      <div class="p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-gray-900">Licensed Local Guide</h3>
+          <span class="text-sm font-medium text-green-600">$40/day</span>
+        </div>
+        <p class="mt-2 text-gray-600 text-sm">Explore hidden trails and learn about the local ecosystem with a certified
+          guide from the local community.</p>
+        <button onclick="openModal('marketplace-modal')"
+          class="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Book
+          Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Sustainability Toolkit -->
+<section id="toolkit" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Sustainability Toolkit</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">Leave No Trace Tips</h3>
+      <ul class="list-disc pl-5 space-y-2 text-gray-600">
+        <li>Plan ahead and prepare.</li>
+        <li>Travel and camp on durable surfaces.</li>
+        <li>Dispose of waste properly.</li>
+        <li>Leave what you find.</li>
+        <li>Minimize campfire impacts.</li>
+        <li>Respect wildlife.</li>
+        <li>Be considerate of other visitors.</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">Site Carrying Capacity</h3>
+      <div class="relative w-48 h-48 md:w-64 md:h-64 rounded-full bg-gray-200">
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div class="text-5xl font-bold text-green-600">75%</div>
+          <p class="text-gray-500">Current Occupancy</p>
+        </div>
+      </div>
+      <p class="mt-4 text-gray-600">This indicator helps manage tourist flow to reduce environmental stress. The color
+        changes based on occupancy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Trip Planner & Itineraries -->
+<section id="planner" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Trip Planner & Itineraries</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">Pre-Built Itineraries</h3>
+      <div class="space-y-4">
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <h4 class="text-lg font-medium text-gray-800">The Cultural Trail (3 Days)</h4>
+          <p class="text-gray-600 text-sm">Explore Ranchi, visit tribal villages, and witness traditional art forms.</p>
+          <button onclick="copyToClipboard('cultural-itinerary')"
+            class="mt-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors">
+            Copy Itinerary
+          </button>
+        </div>
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <h4 class="text-lg font-medium text-gray-800">Eco-Adventure Circuit (5 Days)</h4>
+          <p class="text-gray-600 text-sm">Experience Betla National Park, Hundru Falls, and trekking in the hills.</p>
+          <button onclick="copyToClipboard('eco-itinerary')"
+            class="mt-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors">
+            Copy Itinerary
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">Create Your Own Trip</h3>
+      <form onsubmit="handleFormSubmit(event, 'Trip Planner')">
+        <div class="space-y-4">
+          <div>
+            <label for="trip-name" class="block text-sm font-medium text-gray-700">Trip Name</label>
+            <input type="text" id="trip-name"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              required>
+          </div>
+          <div>
+            <label for="start-date" class="block text-sm font-medium text-gray-700">Start Date</label>
+            <input type="date" id="start-date"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              required>
+          </div>
+          <div>
+            <label for="destinations" class="block text-sm font-medium text-gray-700">Destinations (e.g., Ranchi,
+              Parasnath, Betla)</label>
+            <textarea id="destinations" rows="3"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              required></textarea>
+          </div>
+          <button type="submit"
+            class="w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Create
+            Trip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Content & Storytelling -->
+<section id="content" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Content & Storytelling</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Video/Audio Card -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <div class="relative h-48 bg-gray-200 flex items-center justify-center">
+        <svg class="h-16 w-16 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm12 13l4-4-4-4V7l4 4-4 4v-4l4 4v4h-4z" />
+        </svg>
+      </div>
+      <div class="p-4">
+        <h3 class="text-xl font-semibold">Short Documentary: Tribes of Jharkhand</h3>
+        <p class="mt-2 text-gray-600 text-sm">A short film about the culture and traditions of the Munda and Santhal
+          tribes.</p>
+      </div>
+    </div>
+    <!-- Artisan Profile Card -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <img class="w-full h-48 object-cover" src="https://placehold.co/600x400/D1D5DB/1F2937?text=Artisan+Profile"
+        alt="Artisan Profile">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold">Artisan Profile: Basanti Devi</h3>
+        <p class="mt-2 text-gray-600 text-sm">Meet a local artisan preserving the traditional Sohrai and Khovar art
+          forms.</p>
+      </div>
+    </div>
+    <!-- Photo Gallery Link Card -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+      <div class="relative h-48 bg-gray-200 flex items-center justify-center">
+        <svg class="h-16 w-16 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M15 13.5c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+          <path
+            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 19l3-4 2 2.5L13 13l6 6H5z" />
+        </svg>
+      </div>
+      <div class="p-4">
+        <h3 class="text-xl font-semibold">Photo Gallery: Nature & People</h3>
+        <p class="mt-2 text-gray-600 text-sm">Browse stunning visuals of Jharkhand's landscapes and vibrant communities.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Feedback and Reporting -->
+<section id="feedback" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Feedback & Reporting</h2>
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
+    <form onsubmit="handleFormSubmit(event, 'Feedback')">
+      <div class="space-y-6">
+        <div>
+          <label for="review" class="block text-sm font-medium text-gray-700">Leave a Review</label>
+          <textarea id="review" rows="4"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="Share your experience..." required></textarea>
+        </div>
+        <button type="submit"
+          class="w-full bg-green-600 text-white rounded-lg py-2 font-medium hover:bg-green-700 transition-colors">Submit
+          Review</button>
+      </div>
+    </form>
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800">Report an Issue</h3>
+      <p class="mt-2 text-gray-600 text-sm">Use this feature to report litter, safety hazards, or other impacts at a
+        specific location.</p>
+      <button onclick="handleFormSubmit(event, 'Impact Report')"
+        class="mt-4 w-full bg-red-600 text-white rounded-lg py-2 font-medium hover:bg-red-700 transition-colors">
+        Submit Geo-tagged Impact Report
+      </button>
+      <p class="mt-2 text-xs text-gray-500 text-center">Note: This is a prototype. A real app would use your device's
+        location to tag the report.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Admin Dashboard (V2) -->
+<section id="admin" class="page py-12">
+  <h2 class="text-3xl font-bold text-center mb-10">Admin Dashboard</h2>
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+      <div class="bg-indigo-100 p-6 rounded-lg">
+        <h4 class="text-4xl font-bold text-indigo-600">12,500</h4>
+        <p class="mt-1 text-gray-600 font-medium">Monthly Footfall</p>
+      </div>
+      <div class="bg-purple-100 p-6 rounded-lg">
+        <h4 class="text-4xl font-bold text-purple-600">850</h4>
+        <p class="mt-1 text-gray-600 font-medium">Total Bookings</p>
+      </div>
+      <div class="bg-green-100 p-6 rounded-lg">
+        <h4 class="text-4xl font-bold text-green-600">42</h4>
+        <p class="mt-1 text-gray-600 font-medium">New Reports</p>
+      </div>
+    </div>
+    <div class="mt-8">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">Recent Bookings</h3>
+      <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking ID</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#JH2024-001</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Homestay (Ranchi)</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Jane Doe</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">$90</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#JH2024-002</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Dokra Workshop</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">John Smith</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">$50</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Global Success Modal -->
+<div id="success-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300">
+  <div
+    class="bg-white rounded-xl shadow-lg p-8 max-w-sm mx-auto text-center transform scale-95 transition-transform duration-300">
+    <svg class="mx-auto h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <h3 class="mt-4 text-xl font-semibold text-gray-900" id="success-modal-title">Success!</h3>
+    <p class="mt-2 text-gray-600" id="success-modal-message">Your action was completed successfully.</p>
+    <button onclick="closeModal('success-modal')"
+      class="mt-6 w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">OK</button>
+  </div>
+</div>
+
+<!-- Booking Modal -->
+<div id="booking-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300">
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto transform scale-95 transition-transform duration-300">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-2xl font-bold text-gray-900">Book Experience</h3>
+      <button onclick="closeModal('booking-modal')" class="text-gray-400 hover:text-gray-600">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <form onsubmit="handleFormSubmit(event, 'Booking')">
+      <div class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Your Name</label>
+          <input type="text" id="name"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            required>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <input type="email" id="email"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            required>
+        </div>
+        <div>
+          <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" id="date"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            required>
+        </div>
+        <button type="submit"
+          class="w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 transition-colors">Confirm
+          Booking</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <!-- Updated Auto scroll and manual arrow scroll script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('exploreScrollContainer');
+      const scrollLeftBtn = document.getElementById('scrollLeft');
+      const scrollRightBtn = document.getElementById('scrollRight');
+
+      if (!container || !scrollLeftBtn || !scrollRightBtn) return;
+
+      // Manual scroll handlers for arrow buttons
+      scrollLeftBtn.addEventListener('click', () => {
+        container.scrollBy({ left: -200, behavior: 'smooth' });
+        pauseAutoScroll();
+      });
+
+      scrollRightBtn.addEventListener('click', () => {
+        container.scrollBy({ left: 200, behavior: 'smooth' });
+        pauseAutoScroll();
+      });
+
+      let scrollPos = container.scrollLeft;
+      let direction = 1; // 1 for right, -1 for left
+      const scrollSpeed = 1; // px per frame
+
+      let isUserScrolling = false;
+      let scrollTimeout;
+
+      function pauseAutoScroll() {
+        isUserScrolling = true;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isUserScrolling = false;
+          scrollPos = container.scrollLeft;
+        }, 1500); // pause auto-scroll 1.5 seconds after last manual click
+      }
+
+      container.addEventListener('scroll', () => {
+        if (!isUserScrolling) {
+          scrollPos = container.scrollLeft;
+        }
+      });
+
+      function autoScroll() {
+        if (!isUserScrolling) {
+          const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+          scrollPos += direction * scrollSpeed;
+          if (scrollPos >= maxScrollLeft) {
+            scrollPos = maxScrollLeft;
+            direction = -1;
+          } else if (scrollPos <= 0) {
+            scrollPos = 0;
+            direction = 1;
+          }
+          container.scrollLeft = scrollPos;
+        }
+        requestAnimationFrame(autoScroll);
+      }
+
+      autoScroll();
+    });
+  </script>
+
+
+<script>
+  // Data for pre-built itineraries (simulated)
+  const itineraries = {
+    'cultural-itinerary': `Day 1: Arrive in Ranchi, visit local markets and Jagannath Temple.
+Day 2: Village tour to learn about tribal art (Sohrai/Khovar) and culture.
+Day 3: Explore the tribal museum and depart.`,
+    'eco-itinerary': `Day 1: Arrive and transfer to Betla National Park. Evening safari.
+Day 2: Morning safari, then hike to Betla Fort.
+Day 3: Travel to Hundru Falls, enjoy the scenic views.
+Day 4: Trekking near Hundru and visit a nearby village.
+Day 5: Departure from Ranchi.`,
+  };
+
+  // Get elements for navigation and pages
+  const pages = document.querySelectorAll('.page');
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  // Function to show a specific page and hide others
+  function showPage(pageId) {
+    pages.forEach(page => {
+      page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo(0, 0); // Scroll to top of page
+    // Close mobile menu if open
+    mobileMenu.classList.add('hidden');
+  }
+
+  // Toggle mobile menu visibility
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Universal function to open a modal
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  }
+
+  // Universal function to close a modal
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.add('hidden');
+    document.body.style.overflow = ''; // Re-enable scrolling
+  }
+
+  // Handle form submissions universally
+  function handleFormSubmit(event, formType) {
+    event.preventDefault();
+    const modalTitle = document.getElementById('success-modal-title');
+    const modalMessage = document.getElementById('success-modal-message');
+
+    modalTitle.textContent = `${formType} Submitted!`;
+    modalMessage.textContent = `Thank you for your submission. This information would be processed by our backend system.`;
+
+    openModal('success-modal');
+
+    // Reset the form after a slight delay for better UX
+    setTimeout(() => {
+      event.target.reset();
+    }, 500);
+  }
+
+  // Function to copy text to the clipboard
+  function copyToClipboard(itineraryId) {
+    const itineraryText = itineraries[itineraryId];
+    if (!itineraryText) {
+      return;
+    }
+
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = itineraryText;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        const modalTitle = document.getElementById('success-modal-title');
+        const modalMessage = document.getElementById('success-modal-message');
+        modalTitle.textContent = 'Copied to Clipboard!';
+        modalMessage.textContent = 'The itinerary has been copied to your clipboard.';
+        openModal('success-modal');
+      } else {
+        console.error('Copy command was unsuccessful.');
+      }
+    } catch (err) {
+      console.error('Oops, unable to copy', err);
+    } finally {
+      document.body.removeChild(tempTextArea);
+    }
+  }
+</script>
+
+<script>
+  // Page navigation logic
+  function showPage(pageId) {
+    const pages = document.querySelectorAll('.page');
+    const mobileMenu = document.getElementById('mobile-menu');
+    pages.forEach(page => page.classList.remove('active'));
+    const page = document.getElementById(pageId);
+    if (page) page.classList.add('active');
+    window.scrollTo(0, 0);
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+    }
+  }
+  // Hamburger toggle on DOM ready
+  document.addEventListener("DOMContentLoaded", () => {
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        const expanded = mobileMenu.classList.contains("hidden") ? "false" : "true";
+        mobileMenuButton.setAttribute("aria-expanded", expanded);
+      });
+    }
+  });
+</script>
+
+
+<!-- Include Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Global variables for map and marker
+  let map, marker;
+
+  // Initialize map on DOM content loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    map = L.map('mapContainer').setView([23.5, 85.33], 6); // Center on Jharkhand approx
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+  });
+
+  // Search location function
+  async function searchLocation() {
+    const city = document.getElementById('cityInputMap').value.trim();
+    const errorDiv = document.getElementById('errorMap');
+    errorDiv.textContent = '';
+    if (!city) {
+      errorDiv.textContent = 'âš ï¸ Please enter a location';
+      return;
+    }
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`);
+      const data = await response.json();
+      if (!data || data.length === 0) {
+        errorDiv.textContent = 'âŒ Location not found';
+        return;
+      }
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+      map.setView([lat, lon], 12);
+      if (marker) {
+        map.removeLayer(marker);
+      }
+      marker = L.marker([lat, lon]).addTo(map).bindPopup(`<b>${city}</b>`).openPopup();
+    } catch {
+      errorDiv.textContent = 'âŒ Error fetching location';
+    }
+  }
+  // Enable Enter key for map search bar
+  document.getElementById('cityInputMap').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      searchLocation();
+    }
+  });
+
+  // Show page function with map size fix
+  pages = document.querySelectorAll('.page');
+  mobileMenu = document.getElementById('mobile-menu');
+
+  function showPage(id) {
+    pages.forEach(p => p.classList.remove('active'));
+    const page = document.getElementById(id);
+    if (page) page.classList.add('active');
+    window.scrollTo(0, 0);
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+    }
+    if (id === 'map' && map) {
+      setTimeout(() => map.invalidateSize(), 300);
+    }
+  }
+
+  // Mobile menu toggle
+  mobileMenuButton = document.getElementById('mobile-menu-button');
+  if (mobileMenuButton) {
+    mobileMenuButton.addEventListener('click', () => {
+      if (mobileMenu) mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>
+<script>function toggleDropdown(id) {
+  const menu = document.getElementById(id);
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
+}
+
+</script>
+
+</body>
+
+</html>
